@@ -28,6 +28,7 @@ Web app privada para la colección de 54 cartas SAM PIECE: escanear el QR de cad
 | `recompensa`, `frase` | Cartel de recompensa |
 | `dedicatoria` | Mensaje en el reverso de la carta |
 | `audio` | Nota de voz opcional (ruta a un archivo de audio) |
+| `cancion` | `{titulo, artista, spotify}` (enlace de Spotify) o `{titulo, artista, archivo}` (audio propio en `audio/`) |
 | `imagen`, `miniatura` | Ilustración (WebP) |
 | `modelos` | Figura 3D opcional (si está vacío, no se muestra el botón) |
 

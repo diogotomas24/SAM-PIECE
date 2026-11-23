@@ -36,7 +36,8 @@
    "h": "d9cc136eca11ffbafee02b82b6dc5c68d142371d130b3f639a9d156b6a798fe9",
    "miniatura": "images/cartas/001-mini.webp",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 2,
@@ -51,7 +52,8 @@
    "modelos": [],
    "h": "e0cc906e2fb8653cec394c30187c78eacca4a62d35f05974f83f8cb881fa3df4",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 3,
@@ -66,7 +68,8 @@
    "modelos": [],
    "h": "411d3725d58f37e845ad53c68d73b32b249dabd9fa0477bdfe20b9e918bb40a4",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 4,
@@ -81,7 +84,8 @@
    "modelos": [],
    "h": "fd3e9dc186c22062b1da8c6d48ab0100147e6cca611b42b88569f1897afffbb7",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 5,
@@ -96,7 +100,8 @@
    "modelos": [],
    "h": "36f430d33fcccec6ea5b0b08db0259f0588f371a582e4f5e4543e6ec21157f87",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 6,
@@ -111,7 +116,8 @@
    "modelos": [],
    "h": "de782611e5d0a88fb4f5005f005c58c310564f11b0d8b9d7e09ddd2d5e8df9bf",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 7,
@@ -126,7 +132,8 @@
    "modelos": [],
    "h": "80f14eeb926e9fca86f62d3c7f0f19f8e0831f00290365925ecd95566a8c6721",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 8,
@@ -141,7 +148,8 @@
    "modelos": [],
    "h": "7c6b4368fc7441cab7f13681de2140f1e66a118c85835962a2a3dc011d262d90",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 9,
@@ -156,7 +164,8 @@
    "modelos": [],
    "h": "e20c426cf4aaee4a2a2fff7fbc651e47f35b5b7716d543e80b410e98f1b45d9b",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 10,
@@ -171,7 +180,8 @@
    "modelos": [],
    "h": "0af8fda89318e4aef9d4c47a577fd8c542e67b85c2c63663c57148047586b662",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 11,
@@ -186,7 +196,8 @@
    "modelos": [],
    "h": "d228c5efe63b573bf8c0daae42a3807984ff03b007ad2fbcb660f7f2637d4156",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 12,
@@ -201,7 +212,8 @@
    "modelos": [],
    "h": "11d151bba4aed563e9cdf091182cff65c3f76e7dc06ecc48cb8b1503c67433df",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 13,
@@ -216,7 +228,8 @@
    "modelos": [],
    "h": "73577418f1276b639b4f8d1812fa2a535c6a7f5a10e77f14eb9faf8148a4a2e5",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 14,
@@ -231,7 +244,8 @@
    "modelos": [],
    "h": "f22e959bae4f75e4118ec6b1925b1350bbe10f50643d8efe739bc09643ab1d07",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 15,
@@ -246,7 +260,8 @@
    "modelos": [],
    "h": "645227e744a61da1baf1a7d3ce115a56bba289ab771105360d19679c507c78a8",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 16,
@@ -261,7 +276,8 @@
    "modelos": [],
    "h": "6e04ed0c7bce6c89d22fd5a9716f041be7c9e63e378c99218d28249d1b3ea867",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 17,
@@ -276,7 +292,8 @@
    "modelos": [],
    "h": "be0d1d6d04a156b8ff8c050e053890325d420be14ddd08c4855004de060c380b",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 18,
@@ -291,7 +308,8 @@
    "modelos": [],
    "h": "8cf0b813287f08a550cfec6cba4f4c7c31c29946d551c60c8b37076af4f877cc",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 19,
@@ -306,7 +324,8 @@
    "modelos": [],
    "h": "4bff5f435ac947523a6a0ee6eb35cd18b295b05c63bf3117b97063275ea5714d",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 20,
@@ -321,7 +340,8 @@
    "modelos": [],
    "h": "dbb1bea01b61da5f3b4b4868b8e7a04ddaae335eaed36db3cf3fb3d3d2c70b97",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 21,
@@ -336,7 +356,8 @@
    "modelos": [],
    "h": "71c518e033a204d0f1120c2b75a697256f3724ddf84fa057f196a6a65570bc9e",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 22,
@@ -351,7 +372,8 @@
    "modelos": [],
    "h": "a7509c81f12227177686274fa31e11e3cfcc64f06fb1c75b0e13f52c4d3135ba",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 23,
@@ -366,7 +388,8 @@
    "modelos": [],
    "h": "6903372497086f7c4b8a5024d9bb59205da9b477a4343c508be927bd8a6e3714",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 24,
@@ -381,7 +404,8 @@
    "modelos": [],
    "h": "5ec3a8dec085068e1ece45b8bfec1807289100d350a6d645631e26365b383f88",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 25,
@@ -396,7 +420,8 @@
    "modelos": [],
    "h": "4c5c7014e5d6c957f013ab537f6a415afcb249d615786aa62b32019e0759452d",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 26,
@@ -411,7 +436,8 @@
    "modelos": [],
    "h": "bb854a71978329e578256bad8bb84dbed832ed0802a10b24f0a364271cf71c70",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 27,
@@ -426,7 +452,8 @@
    "modelos": [],
    "h": "31a8ee26a199103921714a9a27377e0dcf1248f3426d62715ea079305f0ec2a1",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 28,
@@ -441,7 +468,8 @@
    "modelos": [],
    "h": "185f40093ba8a6a141c37a4221a9794b3f1d2cb8718626a6b0764b6674aebc43",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 29,
@@ -456,7 +484,8 @@
    "modelos": [],
    "h": "a61405ae1b87d8c1c68b9df1d31df4bfee3175f65309c35dced1f8382c332f84",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 30,
@@ -471,7 +500,8 @@
    "modelos": [],
    "h": "93ef4ee4b2f8f456851189d2c656665dc23fa840f8dc6198941c6fcf1efde897",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 31,
@@ -486,7 +516,8 @@
    "modelos": [],
    "h": "b71745a5ba1b826f80127560a822a636e46279967476390cef33191bcfa629fb",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 32,
@@ -501,7 +532,8 @@
    "modelos": [],
    "h": "e27eb6a4bb7fbb276ebb34566fc8a6cab811a003db77ba523e19c21e35f33fac",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 33,
@@ -516,7 +548,8 @@
    "modelos": [],
    "h": "5920f362d3bf47ec3ec3e5cb782399d40585c61c7470e0a58c220fb82849acfa",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 34,
@@ -531,7 +564,8 @@
    "modelos": [],
    "h": "50e9cd2664cb8816d91bb5743ca784b42ae99005f60807777bf488fcdf59d099",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 35,
@@ -546,7 +580,8 @@
    "modelos": [],
    "h": "df0c3a418b8e9fde58d1a2c701488547867cd362f564c32888c57c52afa86003",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 36,
@@ -561,7 +596,8 @@
    "modelos": [],
    "h": "aed8f62bd811da0d27bb382290523b2c6d6cfc9203d8457c16a4c360f3790611",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 37,
@@ -576,7 +612,8 @@
    "modelos": [],
    "h": "24a8553089e5d333d97a818f853f2285a9f1d14721bb82541c552147a6d34564",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 38,
@@ -591,7 +628,8 @@
    "modelos": [],
    "h": "88e55ab15646144cd1dcd764b98bd2c1365d8d6b9e74a56db77ef8d2284ffbe8",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 39,
@@ -606,7 +644,8 @@
    "modelos": [],
    "h": "321544a7aa73fa188aa2602e74bffc3edac904389e625307ddb41ca9cb9f6c6a",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 40,
@@ -621,7 +660,8 @@
    "modelos": [],
    "h": "8a9e2fe7cbaa0d85bfbde74714c9894db755e010cdcb866455d9acdc15466c46",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 41,
@@ -636,7 +676,8 @@
    "modelos": [],
    "h": "2fd01f5470625f1f7e3e892295f2cdb5126b228ce59bc814d7194ec0d605ccff",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 42,
@@ -651,7 +692,8 @@
    "modelos": [],
    "h": "f6d87046c32cb69e4800dad9ad67bee442b2f2d4fbc4e1d60a37ebd188c7f50e",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 43,
@@ -666,7 +708,8 @@
    "modelos": [],
    "h": "b1851f664a54a49e449f8f5e484bab3e9a6a6c40296f4702a408921a1ebb960e",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 44,
@@ -681,7 +724,8 @@
    "modelos": [],
    "h": "ac504ad7bb37963a9bc9cdc1fd7e895ac679cdaf8a2aad6c9f84bcf085127aae",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 45,
@@ -696,7 +740,8 @@
    "modelos": [],
    "h": "819c6d8f91e6285d48aab3330d7fd83f9eb41e085c1f4d54e45a0ec1b2d9817b",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 46,
@@ -711,7 +756,8 @@
    "modelos": [],
    "h": "c9edcf0fa27024d813305d7de76b21c58869c4b5ae4800b6593b023bfb93af79",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 47,
@@ -726,7 +772,8 @@
    "modelos": [],
    "h": "8634cf728c87175b0c3053dffbca95b943a95cfc57f6f673f486fecaa2da6755",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 48,
@@ -741,7 +788,8 @@
    "modelos": [],
    "h": "ed3eb89894068eacbe0219e4ffe13be9d014ce1e88252e31ea6a60c9c10cb57e",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 49,
@@ -756,7 +804,8 @@
    "modelos": [],
    "h": "1d46246ad217c96414de0e060554c4a6161c067000d285985d2d4bd3fb652680",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 50,
@@ -771,7 +820,8 @@
    "modelos": [],
    "h": "f243d8b01ce695d4f927445c64279913c2ba3029acc4c26a6438c3e6c4d7801a",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 51,
@@ -786,7 +836,8 @@
    "modelos": [],
    "h": "ba461a2cdd6c34ac80f79f5892b6f213d7b1ed98206afc7d5967ae7e19a42154",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 52,
@@ -801,7 +852,8 @@
    "modelos": [],
    "h": "3a2e389d5ecf8e8356623c6d6c8c6cf693a3e8f8a8640fce2b9c8863d2bdeee0",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 53,
@@ -816,7 +868,8 @@
    "modelos": [],
    "h": "40e11ca5f774425ec3eaa9b53fa8b185b9f7300a81eba38702fc4e4adf1fce73",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   },
   {
    "id": 54,
@@ -831,7 +884,8 @@
    "modelos": [],
    "h": "38c3e70c6a90640dbef6cc9401135e8c3010429d40d7a027030f432a6232c881",
    "dedicatoria": null,
-   "audio": null
+   "audio": null,
+   "cancion": null
   }
  ]
 }

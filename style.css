@@ -433,3 +433,33 @@ textarea{font:inherit;font-size:14px;width:100%;min-height:90px;color:var(--whit
 .treasure.open .final-msg{opacity:1;transform:none}
 .treasure .cel-k,.treasure .cel-t{opacity:0;transition:opacity .8s .5s}
 .treasure.open .cel-k,.treasure.open .cel-t{opacity:1}
+
+/* ---------- canciones y rocola ---------- */
+.song-panel{margin-top:30px}
+.song-panel h2{display:flex;align-items:center;gap:8px}
+.song-panel h2 svg{width:18px;height:18px}
+.spot iframe{display:block;width:100%;border:0;border-radius:12px;background:#121212}
+.spot-open,.rocola-link{display:inline-block;margin-top:10px;margin-right:16px;color:var(--gold-2);font-size:15px;letter-spacing:.06em}
+.fplay{display:flex;align-items:center;gap:12px;width:100%;padding:10px;border-radius:14px;text-align:left;background:rgba(0,0,0,.35);box-shadow:0 0 0 1px rgba(232,181,74,.3) inset}
+.fplay .fbtn{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:#1a1204;background:var(--metal-gold);box-shadow:0 0 14px rgba(232,181,74,.4)}
+.fplay .fbtn svg{width:20px;height:20px}
+.fplay.on .fbtn{animation:pulse 1.4s ease-in-out infinite}
+.fplay .fmeta{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.fplay .fmeta b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fplay .fmeta small{color:var(--muted)}
+.fplay .fbar{height:4px;border-radius:9px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:4px}
+.fplay .fbar i{display:block;height:100%;width:0;background:var(--metal-gold)}
+.jukebox{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.track{border-radius:14px;background:rgba(6,10,24,.72);box-shadow:0 0 0 1px rgba(232,181,74,.22) inset;overflow:hidden}
+.track summary,.track.locked{display:flex;align-items:center;gap:12px;padding:10px 12px;list-style:none;cursor:pointer}
+.track summary::-webkit-details-marker{display:none}
+.track .tn{flex:none;width:34px;font-family:var(--title);font-weight:800;color:var(--gold-2);font-size:14px}
+.track .tthumb{flex:none;width:38px;height:52px;border-radius:5px;overflow:hidden;background:#0b1434;box-shadow:0 0 0 1px rgba(232,181,74,.4)}
+.track .tthumb img{width:100%;height:100%;object-fit:cover}
+.track .tt{display:flex;flex-direction:column;min-width:0}
+.track .tt b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track .tt small{color:var(--muted);font-size:13px}
+.track.locked{opacity:.45;cursor:default}
+.track[open]{box-shadow:0 0 0 1.5px var(--gold) inset}
+.track .tbody{padding:0 12px 12px}
+a.icon-btn{text-decoration:none}

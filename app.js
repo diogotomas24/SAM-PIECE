@@ -4,7 +4,7 @@
 
 import { startBackground, pauseBackground, requestGyro, unlockAudio, sfx, haptic, isSoundOn, setSound, waveFlag } from './fx.js';
 
-const VERSION = '0.3.0';
+const VERSION = '0.4.0';
 const KEY = 'sampiece.v1';
 const $ = (s, el = document) => el.querySelector(s);
 const root = document.getElementById('root');
@@ -122,6 +122,8 @@ const ICON = {
   save: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg>`,
   play: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>`,
   flip: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg>`,
+  music: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="17" cy="16" r="3" fill="currentColor"/></svg>`,
+  pause: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>`,
   grid: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><rect x="3" y="15" width="7" height="6" rx="1.5"/><rect x="14" y="15" width="7" height="6" rx="1.5"/></svg>`,
   scan: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg>`,
   user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>`,
@@ -193,7 +195,7 @@ function backHTML() {
 function shell(active, inner) {
   root.innerHTML = `<div class="app">
     <div class="top"><div class="brand"><span class="gold-text">SAM PIECE</span><small>3D</small></div>
-      <div class="top-r"><button class="icon-btn" id="snd" aria-label="Sonido">${isSoundOn() ? ICON.soundOn : ICON.soundOff}</button><div class="pill" id="cnt">${count()}/${S.cards.length}</div></div></div>
+      <div class="top-r"><a class="icon-btn" href="#rocola" aria-label="Rocola">${ICON.music}</a><button class="icon-btn" id="snd" aria-label="Sonido">${isSoundOn() ? ICON.soundOn : ICON.soundOff}</button><div class="pill" id="cnt">${count()}/${S.cards.length}</div></div></div>
     <div id="view" class="fade-in">${inner}</div></div>
     <nav class="nav"><div class="nav-in">
       <a href="#coleccion" class="${active === 'coleccion' ? 'on' : ''}">${ICON.grid}Colección</a>
@@ -325,6 +327,7 @@ function viewFicha(num) {
           <dt>Capturada</dt><dd>${esc(fecha)}</dd></dl>
           <p class="quote">${c.frase ? '«' + esc(c.frase) + '»' : '«Frase por escribir»'}</p>
           <div class="seal">SAM<br>PIECE</div></div>
+          ${c.cancion ? `<div class="panel song-panel"><h2>${ICON.music} Banda sonora</h2>${songPlayer(c)}<a class="rocola-link" href="#rocola">Abrir la rocola</a></div>` : ''}
           ${c.modelos?.length ? `<a class="btn" href="#figura-${c.num}" style="width:100%;margin-top:30px">Ver figura 3D</a>` : ''}`
         : `<div class="panel"><h2>Carta bloqueada</h2><p>Encuentra esta carta en uno de tus sobres y escanea su código para desbloquearla.</p></div>
            <a class="btn" href="#escaner" style="width:100%">Escanear</a>`}
@@ -352,6 +355,54 @@ function viewFicha(num) {
   $('#bsave')?.addEventListener('click', () => shareCard(c));
   $('#baudio')?.addEventListener('click', () => { try { new Audio('/' + c.audio).play(); } catch { toast('No se pudo reproducir'); } });
   if (u) sfx('shimmer');
+  bindSongs();
+}
+
+// ---------- canciones ----------
+const spotifyId = url => (url || '').match(/track[/:]([A-Za-z0-9]{10,})/)?.[1] || null;
+const player = new Audio(); player.preload = 'none';
+let playingNum = null;
+player.addEventListener('ended', () => { playingNum = null; syncSongButtons(); });
+player.addEventListener('timeupdate', () => { document.querySelectorAll(`.fplay[data-num="${playingNum}"] .fbar i`).forEach(i => i.style.width = (player.currentTime / (player.duration || 1) * 100) + '%'); });
+function playFile(c) {
+  if (playingNum === c.num && !player.paused) { player.pause(); syncSongButtons(); return; }
+  if (playingNum !== c.num) { player.src = '/' + c.cancion.archivo.replace(/^\//, ''); playingNum = c.num; }
+  player.play().catch(() => { }); syncSongButtons();
+}
+function syncSongButtons() {
+  document.querySelectorAll('.fplay').forEach(b => { const on = b.dataset.num === playingNum && !player.paused; b.classList.toggle('on', on); $('.fbtn', b).innerHTML = on ? ICON.pause : ICON.play; });
+}
+const songMeta = c => [c.cancion.titulo, c.cancion.artista].filter(Boolean).join(' · ');
+function songPlayer(c) {
+  const k = c.cancion; if (!k) return '';
+  const id = spotifyId(k.spotify);
+  if (id) return `<div class="spot"><iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0" height="152" loading="lazy" frameborder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="${esc(songMeta(c) || 'Canción')}"></iframe></div>
+    <a class="spot-open" href="https://open.spotify.com/track/${id}" target="_blank" rel="noopener">Abrir en Spotify</a>`;
+  if (k.archivo) return `<button class="fplay" data-num="${c.num}"><span class="fbtn">${ICON.play}</span><span class="fmeta"><b>${esc(k.titulo || 'Canción de la carta')}</b><small>${esc(k.artista || '')}</small><span class="fbar"><i></i></span></span></button>`;
+  return '';
+}
+function bindSongs() {
+  document.querySelectorAll('.fplay').forEach(b => b.onclick = () => { const c = S.byNum.get(b.dataset.num); if (c) playFile(c); });
+  syncSongButtons();
+}
+function viewRocola() {
+  const withSong = S.cards.filter(c => c.cancion);
+  const mine = withSong.filter(c => S.unlocked[c.num]);
+  shell('coleccion', `
+    <div class="h"><h1 class="gold-text">Rocola</h1><span class="sub">${mine.length}/${withSong.length || S.cards.length} canciones</span></div>
+    <p class="muted" style="margin-top:-6px">Cada carta trae su canción. Desbloquéalas para llenar la rocola del barco.</p>
+    <div class="jukebox">${S.cards.map(c => {
+      const u = S.unlocked[c.num];
+      if (!u || !c.cancion) return `<div class="track locked"><span class="tn">${c.num}</span><span class="tt"><b>${u ? esc(c.nombre || 'Carta ' + c.num) : '???'}</b><small>${u ? 'Canción por elegir' : 'Canción bloqueada'}</small></span></div>`;
+      return `<details class="track"><summary><span class="tn">${c.num}</span>
+        <span class="tthumb">${c.miniatura || c.imagen ? `<img src="/${esc(c.miniatura || c.imagen)}" alt="">` : ''}</span>
+        <span class="tt"><b>${esc(c.cancion.titulo || c.nombre || 'Carta ' + c.num)}</b><small>${esc(c.cancion.artista || c.nombre || '')}</small></span></summary>
+        <div class="tbody">${songPlayer(c)}</div></details>`;
+    }).join('')}</div>`);
+  bindSongs();
+  // carga el reproductor solo al abrir cada canción
+  document.querySelectorAll('details.track').forEach(d => d.addEventListener('toggle', () => { if (d.open) sfx('tap'); }));
 }
 
 // ---------- ampliar con zoom ----------
@@ -686,6 +737,7 @@ function playUnlock(card, tierKey, { preview = false } = {}) {
       if (T.shake && !reduce) { o.classList.add('shake'); setTimeout(() => o.classList.remove('shake'), 500); }
       if (T.gold) setTimeout(() => burst(T.parts / 2), 450);
       $('.label', o).classList.add('show'); $('.actions', o).classList.add('show');
+      if (!preview && card.cancion?.archivo) setTimeout(() => playFile(card), T.gold ? 900 : 500);
     };
     const frame = t => {
       const dt = Math.min(t - last, 50); last = t;
@@ -995,6 +1047,7 @@ function route() {
   else if (h === 'escaner') viewEscaner();
   else if (h === 'perfil') viewPerfil();
   else if (h === 'tripulacion') viewTripulacion();
+  else if (h === 'rocola') viewRocola();
   else if (h === 'pruebas') viewPruebas();
   else if (h === 'muestrario') viewMuestrario();
   else if (h === 'diagnostico') viewDiagnostico();
