@@ -1,20 +1,23 @@
 {
- "version": "prototipo-2",
+ "version": "prototipo-3",
  "cartas": [
   {
    "id": 1,
    "num": "001",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Diogo",
+   "personajes": [
+    "Diogo"
+   ],
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/001.webp",
    "modelos": [
     "models/prueba.glb"
    ],
-   "h": "d9cc136eca11ffbafee02b82b6dc5c68d142371d130b3f639a9d156b6a798fe9"
+   "h": "d9cc136eca11ffbafee02b82b6dc5c68d142371d130b3f639a9d156b6a798fe9",
+   "miniatura": "images/cartas/001-mini.webp"
   },
   {
    "id": 2,

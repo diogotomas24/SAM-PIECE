@@ -4,7 +4,7 @@
 
 import { startBackground, pauseBackground, requestGyro, unlockAudio, sfx, haptic, isSoundOn, setSound, waveFlag } from './fx.js';
 
-const VERSION = '0.2.0';
+const VERSION = '0.2.1';
 const KEY = 'sampiece.v1';
 const $ = (s, el = document) => el.querySelector(s);
 const root = document.getElementById('root');
@@ -148,6 +148,8 @@ const TIERS = {
   samuel: { label: 'Exclusiva de Samuel', parts: 320, rays: true, shake: true, delay: 2000, gold: true },
 };
 const RAREZA_A_TIER = { C: 'comun', UC: 'comun', R: 'comun', L: 'sr', SR: 'sr', SEC: 'sec', SP: 'sec', MR: 'manga', MANGA: 'manga', SAM: 'samuel' };
+const RAREZA_NOMBRE = { C: 'Común', UC: 'Infrecuente', R: 'Rara', L: 'Leader', SR: 'Super Rare', SEC: 'Secret Rare', SP: 'Especial', MR: 'Manga Rare', MANGA: 'Manga Rare', SAM: 'Exclusiva de Samuel' };
+const rarezaNombre = card => RAREZA_NOMBRE[(card.rareza || '').toUpperCase()] || card.rareza || null;
 const tierOf = card => RAREZA_A_TIER[(card.rareza || '').toUpperCase()] || 'comun';
 
 // ---------- cartas ----------
@@ -162,6 +164,12 @@ function cardHTML(card, { link = true, forceFront = false, isNew = false } = {})
     <div class="num">Nº ${card.num}</div><div class="sil">${ICON.shadow}</div><div class="fog"></div><div class="lock">${ICON.lock}</div></div></${tag}>`;
   const name = card.nombre || `Carta ${card.num}`;
   const rc = rarityClass(card);
+  if (card.imagen) { // carta con ilustración propia: la imagen es la carta entera
+    const src = link && card.miniatura ? card.miniatura : card.imagen;
+    return `<${tag} class="card open full ${rc}${isNew ? ' new' : ''}"${href} aria-label="${esc(name)}"><div class="face front">
+      <img class="cardimg" src="/${esc(src)}" alt="${esc(name)}" decoding="async" draggable="false">
+      <div class="holo"></div><div class="glare"></div>${rc === 'r-samuel' ? SAM_STARS : ''}</div></${tag}>`;
+  }
   return `<${tag} class="card open ${rc}${isNew ? ' new' : ''}"${href} aria-label="${esc(name)}"><div class="face front">
     <div class="inner"><div class="art">${card.imagen ? `<img src="${esc(card.imagen)}" alt="">` : ICON.sil}</div>
     <div class="meta"><b>${esc(name)}</b><span>Nº ${card.num}/054</span></div></div>
@@ -276,7 +284,6 @@ function viewFicha(num) {
   if (!c) return go('coleccion');
   const u = S.unlocked[num];
   const fecha = u ? new Date(u.t).toLocaleDateString('es-ES', { dateStyle: 'long' }) : null;
-  const rz = { comun: 'Común', sr: 'Super Rare', sec: 'Secret Rare', manga: 'Manga Rare', samuel: 'Exclusiva de Samuel' }[rarityClass(c).slice(2)];
   shell('coleccion', `
     <div class="h"><h1 class="gold-text">Nº ${c.num}</h1><a class="btn ghost small" href="#coleccion">Volver</a></div>
     <div class="ficha">
@@ -289,7 +296,7 @@ function viewFicha(num) {
           <div class="rule"></div>
           <div class="name">${esc(c.nombre || 'Carta ' + c.num)}</div>
           <div class="bounty"><span class="coin">S</span>${c.recompensa ? esc(Number(c.recompensa).toLocaleString('es-ES')) : '¿?.???.???'}</div>
-          <dl><dt>Rareza</dt><dd>${esc(c.rareza ? (rz || c.rareza) : 'Por definir')}</dd>
+          <dl><dt>Rareza</dt><dd>${esc(rarezaNombre(c) || 'Por definir')}</dd>
           <dt>Número</dt><dd>${c.num}/054</dd>
           <dt>Personajes</dt><dd>${c.personajes?.length ? esc(c.personajes.join(', ')) : 'Por definir'}</dd>
           <dt>Sobre</dt><dd>${c.sobre ? 'Sobre ' + c.sobre : 'Por definir'}</dd>
@@ -425,7 +432,7 @@ function playUnlock(card, tierKey, { preview = false } = {}) {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const o = document.createElement('div'); o.className = 'unlock' + (T.manga ? ' manga' : '');
     o.innerHTML = `<canvas></canvas><div class="stage hover"><div class="flip">${backHTML()}${cardHTML(card, { link: false, forceFront: true }).replace('class="card', 'class="card f')}</div></div>
-      <div class="label">${esc(T.label)}<small>Nº ${card.num}/054</small></div>
+      <div class="label">${esc(preview ? T.label : (rarezaNombre(card) || T.label))}<small>Nº ${card.num}/054</small></div>
       <div class="actions">${preview ? '<button class="btn" data-a="close">Cerrar</button>' : `<button class="btn ghost" data-a="ficha">Ver ficha</button><button class="btn" data-a="fig">Ver figura 3D</button>`}</div>`;
     document.body.appendChild(o); sfx('build');
     const cv = $('canvas', o), ctx = cv.getContext('2d');
