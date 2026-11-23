@@ -4,7 +4,7 @@
 
 import { startBackground, pauseBackground, requestGyro, unlockAudio, sfx, haptic, isSoundOn, setSound, waveFlag } from './fx.js';
 
-const VERSION = '0.2.1';
+const VERSION = '0.3.0';
 const KEY = 'sampiece.v1';
 const $ = (s, el = document) => el.querySelector(s);
 const root = document.getElementById('root');
@@ -13,7 +13,7 @@ const T0 = performance.now();
 const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
 
-const S = { cards: [], byNum: new Map(), unlocked: {}, storageOK: true, persisted: null, lastNew: null };
+const S = { cards: [], byNum: new Map(), unlocked: {}, logros: {}, crew: [], mensajeFinal: null, storageOK: true, persisted: null, lastNew: null };
 const diag = {};
 
 // ---------- utilidades ----------
@@ -40,11 +40,12 @@ function dialog({ title, body, ok = 'Aceptar', cancel = null }) {
 function loadProgress() {
   try {
     const raw = localStorage.getItem(KEY);
-    S.unlocked = raw ? (JSON.parse(raw).cartas || {}) : {};
-  } catch { S.storageOK = false; S.unlocked = {}; }
+    const j = raw ? JSON.parse(raw) : {};
+    S.unlocked = j.cartas || {}; S.logros = j.logros || {};
+  } catch { S.storageOK = false; S.unlocked = {}; S.logros = {}; }
 }
 function saveProgress() {
-  try { localStorage.setItem(KEY, JSON.stringify({ v: 1, actualizado: new Date().toISOString(), cartas: S.unlocked })); return true; }
+  try { localStorage.setItem(KEY, JSON.stringify({ v: 1, actualizado: new Date().toISOString(), cartas: S.unlocked, logros: S.logros })); return true; }
   catch { S.storageOK = false; return false; }
 }
 async function askPersist() {
@@ -116,6 +117,11 @@ const ICON = {
     <g fill="url(#sg)"><circle cx="50" cy="40" r="19"/><path d="M30 30l6-15 7 9 7-14 7 14 7-9 6 15z"/><path d="M14 140c0-40 14-70 36-70s36 30 36 70z"/></g></svg>`,
   soundOn: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10v4h4l5 4V6L8 10z" fill="currentColor"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>`,
   soundOff: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10v4h4l5 4V6L8 10z" fill="currentColor"/><path d="M17 9l5 6M22 9l-5 6"/></svg>`,
+  crew: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.8"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6M15 14.3c3.4-.4 6.5 1.6 6.5 5.2"/></svg>`,
+  zoom: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>`,
+  save: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg>`,
+  play: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>`,
+  flip: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg>`,
   grid: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><rect x="3" y="15" width="7" height="6" rx="1.5"/><rect x="14" y="15" width="7" height="6" rx="1.5"/></svg>`,
   scan: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg>`,
   user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>`,
@@ -166,16 +172,17 @@ function cardHTML(card, { link = true, forceFront = false, isNew = false } = {})
   const rc = rarityClass(card);
   if (card.imagen) { // carta con ilustración propia: la imagen es la carta entera
     const src = link && card.miniatura ? card.miniatura : card.imagen;
-    return `<${tag} class="card open full ${rc}${isNew ? ' new' : ''}"${href} aria-label="${esc(name)}"><div class="face front">
+    return `<${tag} class="card open full ${rc}${isNew ? ' new' : ''}"${href} aria-label="${esc(name)}">${ribbon(card, link)}<div class="face front">
       <img class="cardimg" src="/${esc(src)}" alt="${esc(name)}" decoding="async" draggable="false">
       <div class="holo"></div><div class="glare"></div>${rc === 'r-samuel' ? SAM_STARS : ''}</div></${tag}>`;
   }
-  return `<${tag} class="card open ${rc}${isNew ? ' new' : ''}"${href} aria-label="${esc(name)}"><div class="face front">
+  return `<${tag} class="card open ${rc}${isNew ? ' new' : ''}"${href} aria-label="${esc(name)}">${ribbon(card, link)}<div class="face front">
     <div class="inner"><div class="art">${card.imagen ? `<img src="${esc(card.imagen)}" alt="">` : ICON.sil}</div>
     <div class="meta"><b>${esc(name)}</b><span>Nº ${card.num}/054</span></div></div>
     ${card.rareza ? `<div class="badge">${esc(card.rareza)}</div>` : ''}
     <div class="holo"></div><div class="glare"></div><div class="edge"></div>${rc === 'r-samuel' ? SAM_STARS : ''}</div></${tag}>`;
 }
+function ribbon(card, link) { const u = S.unlocked[card.num]; return link && u && !u.v ? '<div class="ribbon">NUEVA</div>' : ''; }
 function backHTML() {
   return `<div class="card"><div class="face back" style="display:grid;place-items:center">
     <div style="text-align:center"><div class="gold-text" style="font-family:var(--title);font-weight:900;font-size:clamp(20px,6vw,30px);letter-spacing:.08em">SAM<br>PIECE</div>
@@ -191,6 +198,7 @@ function shell(active, inner) {
     <nav class="nav"><div class="nav-in">
       <a href="#coleccion" class="${active === 'coleccion' ? 'on' : ''}">${ICON.grid}Colección</a>
       <a href="#escaner" class="${active === 'escaner' ? 'on' : ''}">${ICON.scan}Escanear</a>
+      <a href="#tripulacion" class="${active === 'tripulacion' ? 'on' : ''}">${ICON.crew}Tripulación</a>
       <a href="#perfil" class="${active === 'perfil' ? 'on' : ''}">${ICON.user}Perfil</a>
     </div></nav>`;
   $('#snd').onclick = () => { setSound(!isSoundOn()); $('#snd').innerHTML = isSoundOn() ? ICON.soundOn : ICON.soundOff; sfx('tap'); haptic(); };
@@ -216,7 +224,7 @@ function islandPath(cx, cy, r, seed) {
   }
   return d + 'Z';
 }
-let sobreFiltro = null;
+let sobreFiltro = null, personaFiltro = null;
 function islandState(n) {
   const cards = S.cards.filter(c => c.sobre === n);
   const got = cards.filter(c => S.unlocked[c.num]).length;
@@ -255,17 +263,17 @@ function mapHTML() {
 }
 function viewColeccion() {
   const n = count(), total = S.cards.length;
-  const visibles = sobreFiltro ? S.cards.filter(c => c.sobre === sobreFiltro) : S.cards;
+  const visibles = personaFiltro ? S.cards.filter(c => (c.personajes || []).includes(personaFiltro)) : sobreFiltro ? S.cards.filter(c => c.sobre === sobreFiltro) : S.cards;
   shell('coleccion', `
     ${installBanner()}
     <div class="h"><h1 class="gold-text">Colección</h1><span class="sub">Doce sobres · ${total} cartas</span></div>
     <div class="progress"><div class="num gold-text">${n}<small>/${total}</small></div><div class="bar"><i style="width:${total ? (n / total * 100) : 0}%"></i></div></div>
     ${mapHTML()}
-    ${sobreFiltro ? `<div class="filter-note"><span>Sobre ${sobreFiltro} · ${visibles.length} cartas</span><button class="btn ghost small" id="clearf">Ver todas</button></div>` : ''}
+    ${sobreFiltro || personaFiltro ? `<div class="filter-note"><span>${personaFiltro ? esc(personaFiltro) : 'Sobre ' + sobreFiltro} · ${visibles.length} carta${visibles.length === 1 ? '' : 's'}</span><button class="btn ghost small" id="clearf">Ver todas</button></div>` : ''}
     ${S.storageOK ? '' : '<p><span class="tag bad">Sin guardado</span> Este navegador no permite guardar la colección (¿modo privado?).</p>'}
     <div class="grid">${visibles.map(c => cardHTML(c, { isNew: S.lastNew === c.num })).join('')}</div>`);
   const nb = $('#nob'); if (nb) nb.onclick = () => { try { sessionStorage.setItem('sp-nobanner', '1'); } catch { } $('#banner').remove(); };
-  $('#clearf')?.addEventListener('click', () => { sobreFiltro = null; sfx('tap'); viewColeccion(); });
+  $('#clearf')?.addEventListener('click', () => { sobreFiltro = null; personaFiltro = null; sfx('tap'); viewColeccion(); });
   const map = $('#map');
   if (map) {
     const states = ISLANDS.map(is => islandState(is.n)); const cur = Math.max(0, states.findIndex(st => !st.done));
@@ -274,7 +282,7 @@ function viewColeccion() {
       const g = e.target.closest('.island'); if (!g) return;
       const sb = +g.dataset.sobre; sfx('tap'); haptic();
       if (!islandState(sb).total) { toast(`El sobre ${sb} aún no tiene cartas asignadas`); return; }
-      sobreFiltro = sobreFiltro === sb ? null : sb; viewColeccion();
+      personaFiltro = null; sobreFiltro = sobreFiltro === sb ? null : sb; viewColeccion();
     });
   }
   S.lastNew = null;
@@ -283,12 +291,26 @@ function viewFicha(num) {
   const c = S.byNum.get(num);
   if (!c) return go('coleccion');
   const u = S.unlocked[num];
+  if (u && !u.v) { u.v = 1; saveProgress(); }
   const fecha = u ? new Date(u.t).toLocaleDateString('es-ES', { dateStyle: 'long' }) : null;
+  const who = (c.personajes || []).filter(Boolean);
+  const firma = who.length ? who.join(', ') : 'Tu tripulación';
   shell('coleccion', `
     <div class="h"><h1 class="gold-text">Nº ${c.num}</h1><a class="btn ghost small" href="#coleccion">Volver</a></div>
     <div class="ficha">
-      <div><div class="showcase" id="show"><div class="aura"></div><div class="stage3d">${cardHTML(c, { link: false })}</div><div class="shadow"></div></div>
-        ${u ? '<div class="hint-tilt">Inclina el móvil o arrastra la carta</div>' : ''}</div>
+      <div><div class="showcase" id="show"><div class="aura"></div>
+        <div class="stage3d"><div class="fc" id="fc"><div class="fc-in" id="fcin">${cardHTML(c, { link: false })}
+          ${u ? `<div class="card fc-back"><div class="face letter">
+            <div class="l-kicker">MENSAJE PARA SAMUEL</div>
+            <div class="l-body">${c.dedicatoria ? esc(c.dedicatoria) : 'Este mensaje todavía viaja en una botella a la deriva…'}</div>
+            <div class="l-sign">— ${esc(firma)}</div><div class="l-seal">SP</div></div></div>` : ''}
+        </div></div></div><div class="shadow"></div></div>
+        ${u ? `<div class="hint-tilt">Toca la carta para darle la vuelta</div>
+        <div class="tools-row">
+          ${c.imagen ? `<button class="tool" id="bzoom">${ICON.zoom}<span>Ampliar</span></button><button class="tool" id="bsave">${ICON.save}<span>Guardar</span></button>` : ''}
+          <button class="tool" id="bflip">${ICON.flip}<span>Mensaje</span></button>
+          ${c.audio ? `<button class="tool" id="baudio">${ICON.play}<span>Nota de voz</span></button>` : ''}
+        </div>` : ''}</div>
       <div>
         ${u ? `<div class="poster">
           <div class="kicker">TRIPULACIÓN SAM PIECE</div>
@@ -298,30 +320,101 @@ function viewFicha(num) {
           <div class="bounty"><span class="coin">S</span>${c.recompensa ? esc(Number(c.recompensa).toLocaleString('es-ES')) : '¿?.???.???'}</div>
           <dl><dt>Rareza</dt><dd>${esc(rarezaNombre(c) || 'Por definir')}</dd>
           <dt>Número</dt><dd>${c.num}/054</dd>
-          <dt>Personajes</dt><dd>${c.personajes?.length ? esc(c.personajes.join(', ')) : 'Por definir'}</dd>
+          <dt>Personajes</dt><dd>${who.length ? esc(who.join(', ')) : 'Por definir'}</dd>
           <dt>Sobre</dt><dd>${c.sobre ? 'Sobre ' + c.sobre : 'Por definir'}</dd>
           <dt>Capturada</dt><dd>${esc(fecha)}</dd></dl>
           <p class="quote">${c.frase ? '«' + esc(c.frase) + '»' : '«Frase por escribir»'}</p>
           <div class="seal">SAM<br>PIECE</div></div>
-          <a class="btn" href="#figura-${c.num}" style="width:100%;margin-top:30px">Ver figura 3D</a>`
-        : `<div class="panel"><h2>Carta bloqueada</h2><p>Encuentra esta carta en uno de tus sobres y escanea su código para desbloquear su figura.</p></div>
+          ${c.modelos?.length ? `<a class="btn" href="#figura-${c.num}" style="width:100%;margin-top:30px">Ver figura 3D</a>` : ''}`
+        : `<div class="panel"><h2>Carta bloqueada</h2><p>Encuentra esta carta en uno de tus sobres y escanea su código para desbloquearla.</p></div>
            <a class="btn" href="#escaner" style="width:100%">Escanear</a>`}
       </div></div>`);
-  // arrastrar para inclinar la carta
-  const show = $('#show'), card = $('.card', show);
-  let drag = null;
-  show.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY }; show.setPointerCapture(e.pointerId); });
+  const show = $('#show'), fc = $('#fc'), fcin = $('#fcin');
+  let drag = null, moved = false;
+  show.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY }; moved = false; show.setPointerCapture(e.pointerId); });
   show.addEventListener('pointermove', e => {
     if (!drag) return;
-    const dx = Math.max(-1, Math.min(1, (e.clientX - drag.x) / 120)), dy = Math.max(-1, Math.min(1, (e.clientY - drag.y) / 120));
-    card.style.setProperty('--rx', (dx * 28).toFixed(1)); card.style.setProperty('--ry', (-dy * 24).toFixed(1));
-    card.style.setProperty('--tx', dx.toFixed(2)); card.style.setProperty('--ty', dy.toFixed(2));
+    const ddx = e.clientX - drag.x, ddy = e.clientY - drag.y; if (Math.hypot(ddx, ddy) > 8) moved = true;
+    const dx = Math.max(-1, Math.min(1, ddx / 120)), dy = Math.max(-1, Math.min(1, ddy / 120));
+    fc.style.setProperty('--rx', (dx * 28).toFixed(1)); fc.style.setProperty('--ry', (-dy * 24).toFixed(1));
+    fc.style.setProperty('--tx', dx.toFixed(2)); fc.style.setProperty('--ty', dy.toFixed(2));
   });
-  const end = () => { if (!drag) return; drag = null; card.style.transition = 'transform .6s cubic-bezier(.2,1.4,.4,1)';
-    ['--rx', '--ry', '--tx', '--ty'].forEach(p => card.style.removeProperty(p)); setTimeout(() => card.style.transition = '', 600); };
-  show.addEventListener('pointerup', end); show.addEventListener('pointercancel', end);
+  const flip = () => { if (!u) return; fcin.classList.toggle('flipped'); sfx('shimmer'); haptic(); };
+  const end = () => {
+    if (!drag) return; drag = null;
+    fc.style.transition = 'transform .6s cubic-bezier(.2,1.4,.4,1)';
+    ['--rx', '--ry', '--tx', '--ty'].forEach(p => fc.style.removeProperty(p)); setTimeout(() => fc.style.transition = '', 600);
+    if (!moved) flip();
+  };
+  show.addEventListener('pointerup', end); show.addEventListener('pointercancel', () => { drag = null; });
+  $('#bflip')?.addEventListener('click', flip);
+  $('#bzoom')?.addEventListener('click', () => openZoom(c));
+  $('#bsave')?.addEventListener('click', () => shareCard(c));
+  $('#baudio')?.addEventListener('click', () => { try { new Audio('/' + c.audio).play(); } catch { toast('No se pudo reproducir'); } });
   if (u) sfx('shimmer');
 }
+
+// ---------- ampliar con zoom ----------
+function openZoom(c) {
+  const z = document.createElement('div'); z.className = 'zoom';
+  z.innerHTML = `<img src="/${esc(c.imagen)}" alt="" draggable="false"><div class="bar3d"><button class="btn ghost small" data-a="close">Cerrar</button><span class="muted">Pellizca para ampliar</span></div>`;
+  document.body.appendChild(z); pauseBackground(true);
+  const img = $('img', z); let sc = 1, tx = 0, ty = 0; const pts = new Map(); let pinch = null, lastTap = 0;
+  const apply = () => { img.style.transform = `translate(${tx}px,${ty}px) scale(${sc})`; };
+  const clamp = () => { sc = Math.max(1, Math.min(5, sc)); const mx = (sc - 1) * innerWidth / 2, my = (sc - 1) * innerHeight / 2; tx = Math.max(-mx, Math.min(mx, tx)); ty = Math.max(-my, Math.min(my, ty)); };
+  z.addEventListener('pointerdown', e => {
+    if (e.target.closest('[data-a]')) return;
+    z.setPointerCapture(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), sc }; }
+    const now = Date.now(); if (pts.size === 1 && now - lastTap < 300) { sc = sc > 1 ? 1 : 2.5; tx = ty = 0; img.style.transition = 'transform .3s'; apply(); setTimeout(() => img.style.transition = '', 300); } lastTap = now;
+  });
+  z.addEventListener('pointermove', e => {
+    if (!pts.has(e.pointerId)) return; const prev = pts.get(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pts.size === 2 && pinch) { const [a, b] = [...pts.values()]; sc = pinch.sc * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d; }
+    else if (pts.size === 1 && sc > 1) { tx += e.clientX - prev.x; ty += e.clientY - prev.y; }
+    clamp(); apply();
+  });
+  const up = e => { pts.delete(e.pointerId); if (pts.size < 2) pinch = null; };
+  z.addEventListener('pointerup', up); z.addEventListener('pointercancel', up);
+  z.addEventListener('click', e => { if (e.target.closest('[data-a="close"]')) { z.remove(); pauseBackground(false); } });
+}
+async function shareCard(c) {
+  const name = c.nombre || 'Carta ' + c.num;
+  try {
+    const b = await (await fetch('/' + c.imagen)).blob();
+    const f = new File([b], `SAM-PIECE-${c.num}.${(b.type.split('/')[1] || 'webp')}`, { type: b.type });
+    if (navigator.canShare?.({ files: [f] })) await navigator.share({ files: [f], title: `SAM PIECE · ${name}` });
+    else { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = f.name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
+  } catch (e) { if (e?.name !== 'AbortError') toast('No se pudo guardar la imagen'); }
+}
+
+// ---------- tripulación ----------
+function crewStats(name) {
+  const cards = S.cards.filter(c => (c.personajes || []).includes(name));
+  const got = cards.filter(c => S.unlocked[c.num]);
+  const face = got.find(c => c.miniatura || c.imagen);
+  return { total: cards.length, got: got.length, face, done: cards.length > 0 && got.length === cards.length };
+}
+function viewTripulacion() {
+  const list = S.crew.map(n => ({ n, ...crewStats(n) }));
+  const met = list.filter(m => m.got > 0).length;
+  shell('tripulacion', `
+    <div class="h"><h1 class="gold-text">Tripulación</h1><span class="sub">${met}/${list.length} reclutados</span></div>
+    <div class="crew">${list.map(m => `
+      <button class="mate${m.got ? ' met' : ''}${m.done ? ' done' : ''}" data-n="${esc(m.n)}">
+        <div class="avatar">${m.face ? `<img src="/${esc(m.face.miniatura || m.face.imagen)}" alt="">` : `<span>${m.got ? esc(m.n[0]) : '?'}</span>`}</div>
+        <b>${esc(m.n)}</b>
+        <span class="mc">${m.total ? `${m.got}/${m.total} carta${m.total === 1 ? '' : 's'}` : 'Cartas por asignar'}</span>
+        ${m.done ? '<i class="done-tag">COMPLETO</i>' : ''}
+      </button>`).join('')}</div>`);
+  $('.crew').addEventListener('click', e => {
+    const b = e.target.closest('.mate'); if (!b) return;
+    const st = crewStats(b.dataset.n);
+    if (!st.total) { toast('Aún no hay cartas asignadas a ' + b.dataset.n); return; }
+    personaFiltro = b.dataset.n; sobreFiltro = null; go('coleccion');
+  });
+}
+
 function viewEscaner() {
   shell('escaner', `
     <div class="h"><h1>Escanear</h1></div>
@@ -361,27 +454,154 @@ const extractCode = text => (text || '').match(/sp-[a-z0-9]{10}/i)?.[0]?.toLower
 
 function viewPerfil() {
   const n = count(), total = S.cards.length;
+  const ti = titulo(n);
+  const sobres = ISLANDS.filter(is => islandState(is.n).done).length;
+  const logrosHechos = LOGROS.filter(l => S.logros[l.id]).length;
+  const bit = S.cards.filter(c => S.unlocked[c.num]).sort((a, b) => S.unlocked[b.num].t.localeCompare(S.unlocked[a.num].t));
   shell('perfil', `
-    <div class="h"><h1>Perfil</h1></div>
-    <div class="panel"><h2>Progreso</h2>
-      <div class="progress" style="margin:8px 0 0"><div class="num">${n}<small>/${total}</small></div><div class="bar"><i style="width:${total ? n / total * 100 : 0}%"></i></div></div>
-      <p class="muted" style="margin-top:10px">Tu colección se guarda en este teléfono${isStandalone() ? '' : ' (en este navegador)'}.</p></div>
+    <div class="captain">
+      <div class="cap-flag">${EMBLEM.replace('width="600" height="400"', 'width="100%"')}</div>
+      <div class="cap-k">CAPITÁN SAMUEL</div>
+      <div class="cap-t gold-text emboss">${esc(ti.t)}</div>
+      <div class="cap-stats"><div><b class="gold-text">${n}</b><span>Cartas</span></div><div><b class="gold-text">${sobres}</b><span>Sobres</span></div><div><b class="gold-text">${logrosHechos}</b><span>Logros</span></div></div>
+      ${ti.next ? `<div class="cap-next"><div class="bar"><i style="width:${Math.round((n - ti.from) / (ti.next[0] - ti.from) * 100)}%"></i></div>
+        <span>${ti.next[0] - n} carta${ti.next[0] - n === 1 ? '' : 's'} para ser <b>${esc(ti.next[1])}</b></span></div>` : '<div class="cap-next"><span>Has completado la colección</span></div>'}
+      ${n === total && total ? '<button class="btn" id="btreasure" style="margin-top:14px">Abrir el tesoro final</button>' : ''}
+    </div>
+    <div class="panel"><h2>Logros</h2><div class="medals">${LOGROS.map(l => {
+      const ok = !!S.logros[l.id];
+      return `<div class="medal${ok ? ' ok' : ''}"><div class="m-ico">${ok || !l.secreto ? MEDAL_ICO[l.ico] : '?'}</div>
+        <b>${ok || !l.secreto ? esc(l.t) : 'Logro secreto'}</b><span>${ok || !l.secreto ? esc(l.d) : 'Sigue explorando…'}</span></div>`;
+    }).join('')}</div></div>
+    <div class="panel"><h2>Bitácora</h2>${bit.length ? `<ol class="log">${bit.map(c => `<li><a href="#carta-${c.num}">
+      <span class="ld">${esc(new Date(S.unlocked[c.num].t).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }))}</span>
+      <span class="lt">${esc(c.nombre || 'Carta ' + c.num)}</span><span class="lr">${esc(rarezaNombre(c) || 'Nº ' + c.num)}</span></a></li>`).join('')}</ol>`
+      : '<p class="muted">Aquí quedará el diario de tu viaje: cada carta que consigas, con su fecha.</p>'}</div>
     <div class="panel"><h2>Copia de seguridad</h2>
-      <p>Guarda este texto (por ejemplo, en Notas). Si cambias de móvil, pégalo aquí para recuperar tus cartas. También puedes volver a escanearlas.</p>
+      <p>Guarda este texto (por ejemplo, en Notas). Si cambias de móvil, pégalo abajo para recuperar tus cartas. También puedes volver a escanearlas.</p>
       <textarea id="bk" readonly>${n ? esc(exportBackup()) : 'Aún no tienes cartas.'}</textarea>
-      <div class="row" style="margin-top:8px"><button class="btn small" id="bcopy"${n ? '' : ' disabled'}>Copiar</button></div></div>
-    <div class="panel"><h2>Recuperar colección</h2>
+      <div class="row" style="margin-top:8px"><button class="btn small" id="bcopy"${n ? '' : ' disabled'}>Copiar</button></div>
+      <h2 style="margin-top:16px">Recuperar colección</h2>
       <textarea id="bi" placeholder="Pega aquí tu copia SAMPIECE1:…"></textarea>
       <div class="row" style="margin-top:8px"><button class="btn ghost small" id="bimp">Recuperar</button></div><div class="msg" id="bmsg"></div></div>
-    <p class="muted" style="text-align:center;font-size:14px">SAM PIECE 3D · v${VERSION}</p>`);
+    <p class="muted" style="text-align:center;font-size:14px">SAM PIECE · v${VERSION}</p>`);
+  $('#btreasure')?.addEventListener('click', () => showTreasure());
   $('#bcopy').onclick = async () => { try { await navigator.clipboard.writeText(exportBackup()); toast('Copia guardada en el portapapeles'); } catch { $('#bk').select(); toast('Selecciona y copia el texto'); } };
   $('#bimp').onclick = async () => {
     const m = $('#bmsg'); const r = await importBackup($('#bi').value);
     if (!r.total) { m.className = 'msg bad'; m.textContent = 'No se encontró ninguna copia en el texto.'; return; }
+    checkLogros(true);
     m.className = 'msg ok'; m.textContent = `${r.added} carta${r.added === 1 ? '' : 's'} recuperada${r.added === 1 ? '' : 's'}${r.bad ? ` · ${r.bad} código${r.bad === 1 ? '' : 's'} no válido${r.bad === 1 ? '' : 's'}` : ''}.`;
     $('#cnt').textContent = `${count()}/${S.cards.length}`;
   };
 }
+
+// ---------- títulos y logros ----------
+function titulo(n) {
+  const total = S.cards.length || 54;
+  const T = [[0, 'Grumete'], [5, 'Marinero'], [15, 'Contramaestre'], [25, 'Navegante'], [35, 'Primer oficial'], [45, 'Capitán'], [total, 'Rey de SAM PIECE']];
+  let cur = T[0]; for (const t of T) if (n >= t[0]) cur = t;
+  return { t: cur[1], from: cur[0], next: T.find(t => t[0] > n) || null };
+}
+const MEDAL_ICO = {
+  anchor: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="2"/><path d="M12 7v14M5 13a7 7 0 0 0 14 0M8 10h8"/></svg>',
+  ship: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 15h18l-3 5H6zM12 3v12M12 4l7 9h-7M11 6l-5 7h5"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z"/></svg>',
+  crown: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 12H5z"/></svg>',
+  island: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 19c3-2 6-2 10-2s7 0 10 2M12 17V8M12 8c-3-1-6 0-7 3M12 8c3-1 6 0 7 3M12 8c-1-3-4-4-6-4"/></svg>',
+  people: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.8"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6M15 14.3c3.4-.4 6.5 1.6 6.5 5.2"/></svg>',
+  gem: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l4 6-10 12L2 9zM2 9h20M9 3l3 18 3-18"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 15A8 8 0 0 1 9 4a8 8 0 1 0 11 11z"/></svg>',
+  bolt: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',
+};
+const unlockedCards = () => S.cards.filter(c => S.unlocked[c.num]);
+const hasClass = k => unlockedCards().some(c => rarityClass(c) === 'r-' + k);
+const LOGROS = [
+  { id: 'primera', ico: 'anchor', t: 'Primer tesoro', d: 'Consigue tu primera carta', ok: () => count() >= 1 },
+  { id: 'cinco', ico: 'ship', t: 'Tripulación en marcha', d: 'Consigue 5 cartas', ok: () => count() >= 5 },
+  { id: 'quince', ico: 'star', t: 'Rumbo fijo', d: 'Consigue 15 cartas', ok: () => count() >= 15 },
+  { id: 'mitad', ico: 'ship', t: 'Mitad del viaje', d: 'Consigue la mitad de la colección', ok: () => count() >= Math.ceil(S.cards.length / 2) },
+  { id: 'todas', ico: 'crown', t: 'Rey de SAM PIECE', d: 'Completa la colección', ok: () => count() >= S.cards.length },
+  { id: 'isla', ico: 'island', t: 'Isla conquistada', d: 'Completa un sobre', ok: () => ISLANDS.some(is => islandState(is.n).done) },
+  { id: 'archipielago', ico: 'island', t: 'Archipiélago', d: 'Completa 3 sobres', ok: () => ISLANDS.filter(is => islandState(is.n).done).length >= 3 },
+  { id: 'amigo', ico: 'people', t: 'Amigo al completo', d: 'Todas las cartas de un amigo', ok: () => S.crew.some(n => { const st = crewStats(n); return st.total >= 2 && st.done; }) },
+  { id: 'tripulacion', ico: 'people', t: 'Tripulación reunida', d: 'Al menos una carta de cada amigo', ok: () => { const w = S.crew.map(crewStats).filter(st => st.total > 0); return w.length >= 2 && w.every(st => st.got > 0); } },
+  { id: 'secreto', ico: 'gem', t: 'Secreto revelado', d: 'Consigue una Secret Rare', ok: () => hasClass('sec') },
+  { id: 'manga', ico: 'gem', t: 'Viñeta legendaria', d: 'Consigue una Manga Rare', ok: () => hasClass('manga') },
+  { id: 'exclusiva', ico: 'crown', t: 'Hecha para ti', d: 'Consigue una Exclusiva de Samuel', ok: () => hasClass('samuel') },
+  { id: 'noche', ico: 'moon', t: 'Pirata nocturno', d: 'Desbloquea una carta entre las 00:00 y las 05:00', secreto: true, ok: () => unlockedCards().some(c => new Date(S.unlocked[c.num].t).getHours() < 5) },
+  { id: 'abordaje', ico: 'bolt', t: 'Día de abordaje', d: 'Consigue 3 cartas el mismo día', secreto: true, ok: () => { const k = {}; return unlockedCards().some(c => (k[S.unlocked[c.num].t.slice(0, 10)] = (k[S.unlocked[c.num].t.slice(0, 10)] || 0) + 1) >= 3); } },
+];
+function checkLogros(silent = false) {
+  const nuevos = [];
+  for (const l of LOGROS) if (!S.logros[l.id] && l.ok()) { S.logros[l.id] = new Date().toISOString(); nuevos.push(l); }
+  if (nuevos.length) saveProgress();
+  return silent ? [] : nuevos;
+}
+let logroChain = Promise.resolve();
+function logroToast(l) {
+  logroChain = logroChain.then(() => new Promise(res => {
+    const t = document.createElement('div'); t.className = 'logro';
+    t.innerHTML = `<div class="m-ico">${MEDAL_ICO[l.ico]}</div><div><small>LOGRO DESBLOQUEADO</small><b></b><span></span></div>`;
+    $('b', t).textContent = l.t; $('span', t).textContent = l.d;
+    document.body.appendChild(t); sfx('shimmer'); haptic('medium');
+    setTimeout(() => t.classList.add('out'), 2900); setTimeout(() => { t.remove(); res(); }, 3400);
+  }));
+  return logroChain;
+}
+
+// ---------- celebraciones ----------
+function confettiOverlay(o, gold = false) {
+  const cv = document.createElement('canvas'); o.prepend(cv);
+  const ctx = cv.getContext('2d'), dpr = Math.min(devicePixelRatio || 1, 2);
+  cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+  const cols = gold ? ['#fff3c4', '#f7d98b', '#e8b54a', '#c8922c'] : ['#f7d98b', '#e8b54a', '#ff5d6c', '#4fd18b', '#2dd2ff', '#f4f2ec'];
+  const P = Array.from({ length: 140 }, () => ({ x: Math.random() * cv.width, y: -Math.random() * cv.height, w: (4 + Math.random() * 6) * dpr, h: (8 + Math.random() * 8) * dpr,
+    v: (1.5 + Math.random() * 3) * dpr, r: Math.random() * 6, vr: (Math.random() - .5) * .2, sx: Math.random() * 6, c: cols[Math.floor(Math.random() * cols.length)] }));
+  let raf; const f = t => { ctx.clearRect(0, 0, cv.width, cv.height);
+    for (const p of P) { p.y += p.v; p.r += p.vr; p.x += Math.sin(t / 400 + p.sx) * dpr; if (p.y > cv.height) { p.y = -20; p.x = Math.random() * cv.width; }
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.r))); ctx.restore(); }
+    raf = requestAnimationFrame(f); };
+  raf = requestAnimationFrame(f);
+  return () => cancelAnimationFrame(raf);
+}
+function showIsland(n) {
+  return new Promise(res => {
+    const is = ISLANDS[n - 1];
+    const o = document.createElement('div'); o.className = 'celebrate';
+    o.innerHTML = `<div class="cel-in"><svg viewBox="0 0 240 170" class="cel-island">
+        <defs><radialGradient id="cg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f7d98b" stop-opacity=".8"/><stop offset="1" stop-color="#f7d98b" stop-opacity="0"/></radialGradient>
+        <radialGradient id="ci" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#4f8a5e"/><stop offset="1" stop-color="#1c3324"/></radialGradient></defs>
+        <ellipse cx="120" cy="100" rx="115" ry="70" fill="url(#cg)"/>
+        <path d="${islandPath(120, 110, 48, is.seed)}" fill="#d9c08a"/><path d="${islandPath(120, 104, 42, is.seed)}" fill="url(#ci)" stroke="#f7d98b" stroke-width="2"/>
+        <path d="M128 98V50" stroke="#e8b54a" stroke-width="3"/><path class="cel-flag" d="M128 50h34l-8 9 8 9h-34z" fill="#05070f" stroke="#e8b54a" stroke-width="1.5"/>
+        <circle cx="140" cy="59" r="5" fill="#f4f2ec"/></svg>
+      <div class="cel-k">ISLA CONQUISTADA</div><div class="cel-t gold-text emboss">¡SOBRE ${n} COMPLETADO!</div>
+      <p>Has reunido todas las cartas de este sobre.</p><button class="btn">Continuar</button></div>`;
+    document.body.appendChild(o); const stop = confettiOverlay(o); sfx('epic'); haptic('heavy');
+    $('.btn', o).onclick = () => { stop(); o.remove(); res(); };
+  });
+}
+function showTreasure() {
+  return new Promise(res => {
+    const o = document.createElement('div'); o.className = 'celebrate treasure';
+    o.innerHTML = `<div class="cel-in">
+      <div class="chest"><div class="glow"></div><div class="lid"></div><div class="box"><i class="lock"></i></div></div>
+      <div class="cel-k">TESORO FINAL</div><div class="cel-t gold-text emboss">¡COLECCIÓN COMPLETA!</div>
+      <div class="final-msg">${S.mensajeFinal ? esc(S.mensajeFinal).replace(/\n/g, '<br>') : 'Samuel: has reunido a toda tu tripulación. Este tesoro guarda un mensaje de todos nosotros… (pendiente de escribir)'}</div>
+      <button class="btn">Cerrar</button></div>`;
+    document.body.appendChild(o); sfx('build');
+    setTimeout(() => { o.classList.add('open'); sfx('epic'); haptic('heavy'); o._stop = confettiOverlay(o, true); }, 1300);
+    $('.btn', o).onclick = () => { o._stop?.(); o.remove(); res(); };
+  });
+}
+async function afterUnlock(card) {
+  const nuevos = checkLogros();
+  if (card.sobre && islandState(card.sobre).done) await showIsland(card.sobre);
+  if (count() === S.cards.length) await showTreasure();
+  for (const l of nuevos) logroToast(l);
+}
+
 function viewMuestrario() {
   const demo = [['C', 'Común'], ['SR', 'Super Rare'], ['SEC', 'Secret Rare'], ['MR', 'Manga Rare'], ['SAM', 'Exclusiva']].map(([r, n], i) =>
     ({ num: String(i + 1).padStart(3, '0'), nombre: n, rareza: r }));
@@ -397,6 +617,7 @@ function viewPruebas() {
         <select id="tnum">${S.cards.map(c => `<option value="${c.num}">Carta ${c.num}</option>`).join('')}</select>
         <select id="ttier">${Object.entries(TIERS).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('')}</select>
         <button class="btn small" id="tprev">Ver</button></div></div>
+    <div class="panel"><h2>Celebraciones</h2><div class="row"><button class="btn ghost small" id="tisla">Sobre completado</button><button class="btn ghost small" id="ttes">Tesoro final</button><button class="btn ghost small" id="tlog">Logro</button></div></div>
     <div class="panel"><h2>Rarezas</h2><p>Muestra de los cinco marcos de carta.</p><a class="btn ghost small" href="#muestrario">Ver muestrario</a></div>
     <div class="panel"><h2>3D</h2><div class="row"><a class="btn ghost small" href="#figura-prueba">Figura de prueba</a><a class="btn ghost small" href="#grupo">Escena grupal</a></div></div>
     <div class="panel"><h2>Diagnóstico</h2><a class="btn ghost small" href="#diagnostico">Abrir diagnóstico</a></div>
@@ -405,9 +626,12 @@ function viewPruebas() {
     const tier = $('#ttier').value, rz = { comun: 'C', sr: 'SR', sec: 'SEC', manga: 'MR', samuel: 'SAM' }[tier];
     playUnlock({ ...S.byNum.get($('#tnum').value), rareza: rz }, tier, { preview: true });
   };
+  $('#tisla').onclick = () => showIsland(3);
+  $('#ttes').onclick = () => showTreasure();
+  $('#tlog').onclick = () => logroToast(LOGROS[0]);
   $('#treset').onclick = async () => {
     if (!(await dialog({ title: 'Reiniciar progreso', body: 'Se borrarán todas las cartas desbloqueadas de este teléfono.', ok: 'Reiniciar', cancel: 'Cancelar' }))) return;
-    S.unlocked = {}; saveProgress(); toast('Progreso reiniciado'); viewPruebas();
+    S.unlocked = {}; S.logros = {}; saveProgress(); toast('Progreso reiniciado'); viewPruebas();
   };
 }
 
@@ -423,70 +647,92 @@ async function handleCode(code) {
   if (!saveProgress()) toast('Atención: este navegador no guarda la colección', 4000);
   S.lastNew = card.num;
   await playUnlock(card, tierOf(card));
+  await afterUnlock(card);
 }
 
 // ---------- animación de desbloqueo ----------
+const listJoin = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1];
 function playUnlock(card, tierKey, { preview = false } = {}) {
   return new Promise(resolve => {
     const T = TIERS[tierKey] || TIERS.comun;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const o = document.createElement('div'); o.className = 'unlock' + (T.manga ? ' manga' : '');
+    const who = (card.personajes || []).filter(Boolean);
+    const line = who.length ? `¡${listJoin(who)} ${who.length > 1 ? 'se unen' : 'se une'} a tu tripulación!` : '¡Nueva carta para tu colección!';
+    const HOLD = T.gold ? 1700 : T.rays || T.manga ? 1400 : 1000;
+    const o = document.createElement('div'); o.className = 'unlock' + (T.manga ? ' manga' : '') + (T.gold ? ' gold' : '');
     o.innerHTML = `<canvas></canvas><div class="stage hover"><div class="flip">${backHTML()}${cardHTML(card, { link: false, forceFront: true }).replace('class="card', 'class="card f')}</div></div>
-      <div class="label">${esc(preview ? T.label : (rarezaNombre(card) || T.label))}<small>Nº ${card.num}/054</small></div>
-      <div class="actions">${preview ? '<button class="btn" data-a="close">Cerrar</button>' : `<button class="btn ghost" data-a="ficha">Ver ficha</button><button class="btn" data-a="fig">Ver figura 3D</button>`}</div>`;
-    document.body.appendChild(o); sfx('build');
-    const cv = $('canvas', o), ctx = cv.getContext('2d');
+      <div class="hold"><div class="hold-bar"><i></i></div><span>Mantén pulsado para revelar</span></div>
+      <div class="label">${esc(preview ? T.label : (rarezaNombre(card) || T.label))}<small>Nº ${card.num}/054</small><em>${esc(line)}</em></div>
+      <div class="actions">${preview ? '<button class="btn" data-a="close">Cerrar</button>' : `<button class="btn ghost" data-a="ficha">Ver ficha</button><button class="btn" data-a="col">Colección</button>`}</div>`;
+    document.body.appendChild(o);
+    const cv = $('canvas', o), ctx = cv.getContext('2d'), stage = $('.stage', o), barI = $('.hold-bar i', o);
     const dpr = Math.min(devicePixelRatio || 1, 2);
     const resize = () => { cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; };
     resize(); addEventListener('resize', resize);
-    let parts = [], start = performance.now(), opened = false, raf;
+    let parts = [], opened = false, raf, holding = false, p = 0, last = performance.now(), openedAt = 0, tick = 0;
     const cx = () => cv.width / 2, cy = () => cv.height * 0.38;
     const burst = n => {
       n = reduce ? Math.min(n, 30) : n;
       for (let i = 0; i < n; i++) {
         const a = Math.random() * Math.PI * 2, s = (2 + Math.random() * 9) * dpr;
-        parts.push({ x: cx(), y: cy(), vx: Math.cos(a) * s, vy: Math.sin(a) * s - 2 * dpr, life: 1, r: (1 + Math.random() * 3) * dpr,
+        parts.push({ x: cx(), y: cy(), vx: Math.cos(a) * s, vy: Math.sin(a) * s - 2 * dpr, life: 1, r: (1 + Math.random() * 3) * dpr, g: .12,
           c: T.gold || Math.random() < .6 ? `hsl(${40 + Math.random() * 12},95%,${60 + Math.random() * 25}%)` : `hsl(${Math.random() * 360},90%,75%)` });
       }
     };
+    const reveal = () => {
+      opened = true; openedAt = performance.now(); stage.style.transform = ''; o.classList.add('revealed');
+      $('.flip', o).classList.add('open'); burst(T.parts || 60);
+      sfx(T.manga ? 'manga' : T.gold || T.rays ? 'epic' : 'reveal'); haptic(T.shake ? 'heavy' : 'medium');
+      if (T.shake && !reduce) { o.classList.add('shake'); setTimeout(() => o.classList.remove('shake'), 500); }
+      if (T.gold) setTimeout(() => burst(T.parts / 2), 450);
+      $('.label', o).classList.add('show'); $('.actions', o).classList.add('show');
+    };
     const frame = t => {
-      const el = t - start; ctx.clearRect(0, 0, cv.width, cv.height);
-      if (T.manga) {
-        ctx.save(); ctx.translate(cx(), cy()); ctx.fillStyle = '#050505';
-        for (let i = 0; i < 90; i++) {
-          const a = i / 90 * Math.PI * 2 + (i % 3) * .01, w = .006 + (i % 5) * .002, r0 = (opened ? 170 : 230 - Math.min(el / 8, 60)) * dpr;
-          ctx.beginPath(); ctx.moveTo(Math.cos(a - w) * r0, Math.sin(a - w) * r0); ctx.lineTo(Math.cos(a) * 2000, Math.sin(a) * 2000); ctx.lineTo(Math.cos(a + w) * r0, Math.sin(a + w) * r0); ctx.fill();
+      const dt = Math.min(t - last, 50); last = t;
+      if (!opened) {
+        p = holding ? Math.min(1, p + dt / HOLD) : Math.max(0, p - dt / 500);
+        barI.style.width = (p * 100).toFixed(1) + '%';
+        const amp = p * p * 7;
+        stage.style.transform = amp ? `translate(${(Math.random() - .5) * amp}px,${(Math.random() - .5) * amp}px) scale(${1 + p * .06})` : '';
+        stage.style.filter = `drop-shadow(0 0 ${10 + p * 40}px rgba(247,217,139,${.25 + p * .6}))`;
+        const q = Math.floor(p * 4); if (holding && q > tick) { tick = q; haptic(); } if (!holding && p === 0) tick = 0;
+        if (holding && Math.random() < .35 + p) { // la luz se concentra en la carta
+          const a = Math.random() * 6.283, r = (180 + Math.random() * 160) * dpr;
+          parts.push({ x: cx() + Math.cos(a) * r, y: cy() + Math.sin(a) * r, vx: -Math.cos(a) * r / 40, vy: -Math.sin(a) * r / 40, life: .9, r: 1.6 * dpr, g: 0, c: '#f7d98b' });
         }
+        if (p >= 1) reveal();
+      }
+      const el = opened ? t - openedAt : 0;
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      if (T.manga && opened) {
+        ctx.save(); ctx.translate(cx(), cy()); ctx.fillStyle = '#050505';
+        for (let i = 0; i < 90; i++) { const a = i / 90 * Math.PI * 2 + (i % 3) * .01, w = .006 + (i % 5) * .002, r0 = 170 * dpr;
+          ctx.beginPath(); ctx.moveTo(Math.cos(a - w) * r0, Math.sin(a - w) * r0); ctx.lineTo(Math.cos(a) * 2000, Math.sin(a) * 2000); ctx.lineTo(Math.cos(a + w) * r0, Math.sin(a + w) * r0); ctx.fill(); }
         ctx.restore();
       } else {
         const g = ctx.createRadialGradient(cx(), cy(), 0, cx(), cy(), 320 * dpr);
-        const glow = opened ? .55 : Math.min(el / T.delay, 1) * .35;
-        g.addColorStop(0, `rgba(232,181,74,${glow})`); g.addColorStop(1, 'rgba(232,181,74,0)');
+        g.addColorStop(0, `rgba(232,181,74,${opened ? .55 : p * .45})`); g.addColorStop(1, 'rgba(232,181,74,0)');
         ctx.fillStyle = g; ctx.fillRect(0, 0, cv.width, cv.height);
-        if (T.rays && !reduce) {
-          ctx.save(); ctx.translate(cx(), cy()); ctx.rotate(el / 3000);
-          for (let i = 0; i < 16; i++) { ctx.rotate(Math.PI / 8); ctx.fillStyle = `rgba(247,217,139,${opened ? .10 : .05})`; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-40 * dpr, -1400 * dpr); ctx.lineTo(40 * dpr, -1400 * dpr); ctx.fill(); }
+        if (T.rays && !reduce && (opened || p > .3)) {
+          ctx.save(); ctx.translate(cx(), cy()); ctx.rotate(t / 3000);
+          for (let i = 0; i < 16; i++) { ctx.rotate(Math.PI / 8); ctx.fillStyle = `rgba(247,217,139,${opened ? .10 : p * .08})`; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-40 * dpr, -1400 * dpr); ctx.lineTo(40 * dpr, -1400 * dpr); ctx.fill(); }
           ctx.restore();
         }
       }
-      if (!opened && !T.manga && el < T.delay && Math.random() < .5) parts.push({ x: cx() + (Math.random() - .5) * 200 * dpr, y: cy() + 150 * dpr, vx: 0, vy: -(1 + Math.random() * 2) * dpr, life: .8, r: 1.5 * dpr, c: '#f7d98b' });
-      parts = parts.filter(p => (p.life -= .012) > 0);
-      for (const p of parts) { p.x += p.vx; p.y += p.vy; p.vy += .12 * dpr; p.vx *= .985; ctx.globalAlpha = p.life; ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill(); }
+      parts = parts.filter(q => (q.life -= .014) > 0);
+      for (const q of parts) { q.x += q.vx; q.y += q.vy; q.vy += q.g * dpr; q.vx *= .985; ctx.globalAlpha = q.life; ctx.fillStyle = q.c; ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, 7); ctx.fill(); }
       ctx.globalAlpha = 1;
-      if (!opened && el >= T.delay) {
-        opened = true; $('.flip', o).classList.add('open'); burst(T.parts);
-        sfx(T.manga ? 'manga' : T.gold || T.rays ? 'epic' : 'reveal'); haptic(T.shake ? 'heavy' : 'medium');
-        if (T.shake && !reduce) { o.classList.add('shake'); setTimeout(() => o.classList.remove('shake'), 500); }
-        if (T.gold) setTimeout(() => burst(T.parts / 2), 450);
-        $('.label', o).classList.add('show'); $('.actions', o).classList.add('show');
-      }
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
+    const down = e => { if (opened || e.target.closest('[data-a]')) return; holding = true; if (p === 0) sfx('build'); if (reduce) reveal(); };
+    const upH = () => { holding = false; };
+    o.addEventListener('pointerdown', down); o.addEventListener('pointerup', upH); o.addEventListener('pointercancel', upH); o.addEventListener('pointerleave', upH);
+    o.addEventListener('contextmenu', e => e.preventDefault());
     o.addEventListener('click', e => {
       const a = e.target.closest('[data-a]')?.dataset.a; if (!a) return;
       cancelAnimationFrame(raf); removeEventListener('resize', resize); o.remove();
-      if (a === 'ficha') go('carta-' + card.num); else if (a === 'fig') go('figura-' + card.num); else if (!preview) go('coleccion');
+      if (a === 'ficha') go('carta-' + card.num); else if (a === 'col') go('coleccion');
       resolve();
     });
   });
@@ -748,6 +994,7 @@ function route() {
   else if (h === 'grupo') openViewer(['/models/prueba.glb', '/models/prueba.glb', '/models/prueba.glb'], 'Escena grupal de prueba');
   else if (h === 'escaner') viewEscaner();
   else if (h === 'perfil') viewPerfil();
+  else if (h === 'tripulacion') viewTripulacion();
   else if (h === 'pruebas') viewPruebas();
   else if (h === 'muestrario') viewMuestrario();
   else if (h === 'diagnostico') viewDiagnostico();
@@ -764,9 +1011,10 @@ async function boot() {
   try {
     const r = await fetch('/cards.json'); const data = await r.json();
     S.cards = data.cartas; S.cards.forEach(c => S.byNum.set(c.num, c));
+    S.crew = data.tripulacion || []; S.mensajeFinal = data.mensajeFinal || null;
   } catch { root.innerHTML = `<div class="app"><div class="panel"><h2>Error</h2><p>No se pudo cargar la colección. Comprueba la conexión y vuelve a abrir la app.</p></div></div>`; return; }
   startBackground(document.getElementById('bg'));
-  loadProgress(); askPersist();
+  loadProgress(); askPersist(); checkLogros(true);
   let seen = false; try { seen = !!sessionStorage.getItem('sp-splash'); } catch { }
   if (!location.hash && !seen) splash();
   route();

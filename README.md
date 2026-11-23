@@ -20,6 +20,19 @@ Web app privada para la colección de 54 cartas SAM PIECE: escanear el QR de cad
 | `#sp-xxxxxxxxxx` | Enlace de un QR: desbloquea la carta |
 | `#pruebas`, `#diagnostico`, `#grupo` | Ocultas, para pruebas |
 
+## Datos de cada carta (`cards.json`)
+| Campo | Uso |
+|---|---|
+| `nombre`, `personajes`, `rareza` (C, UC, R, L, SR, SEC, SP, MR, SAM) | Ficha, marco y animación |
+| `sobre` (1–12) | Isla del mapa y celebración al completar el sobre |
+| `recompensa`, `frase` | Cartel de recompensa |
+| `dedicatoria` | Mensaje en el reverso de la carta |
+| `audio` | Nota de voz opcional (ruta a un archivo de audio) |
+| `imagen`, `miniatura` | Ilustración (WebP) |
+| `modelos` | Figura 3D opcional (si está vacío, no se muestra el botón) |
+
+`tripulacion` es la lista de amigos y `mensajeFinal` el texto del tesoro final.
+
 ## Cartas
 `cards.json` contiene las 54 cartas. Cada código se guarda solo como hash SHA-256 (`sampiece:` + código), nunca en claro.
 **Los códigos en claro no deben subirse a este repositorio**: todo lo que hay aquí se publica.
