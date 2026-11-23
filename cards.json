@@ -37,7 +37,11 @@
    "miniatura": "images/cartas/001-mini.webp",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": {
+    "titulo": "ESPECIAL BB",
+    "artista": "La Pantera",
+    "spotify": "https://open.spotify.com/track/5VgNVL7mBhkhAHKd19AzPA"
+   }
   },
   {
    "id": 2,
