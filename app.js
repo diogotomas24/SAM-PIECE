@@ -4,7 +4,7 @@
 
 import { startBackground, pauseBackground, requestGyro, unlockAudio, sfx, haptic, isSoundOn, setSound, waveFlag } from './fx.js';
 
-const VERSION = '0.4.0';
+const VERSION = '0.4.1';
 const KEY = 'sampiece.v1';
 const $ = (s, el = document) => el.querySelector(s);
 const root = document.getElementById('root');
@@ -355,7 +355,7 @@ function viewFicha(num) {
   $('#bsave')?.addEventListener('click', () => shareCard(c));
   $('#baudio')?.addEventListener('click', () => { try { new Audio('/' + c.audio).play(); } catch { toast('No se pudo reproducir'); } });
   if (u) sfx('shimmer');
-  bindSongs();
+  bindSongs({ autoplay: u ? c : null });
 }
 
 // ---------- canciones ----------
@@ -376,14 +376,45 @@ const songMeta = c => [c.cancion.titulo, c.cancion.artista].filter(Boolean).join
 function songPlayer(c) {
   const k = c.cancion; if (!k) return '';
   const id = spotifyId(k.spotify);
-  if (id) return `<div class="spot"><iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0" height="152" loading="lazy" frameborder="0"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="${esc(songMeta(c) || 'Canción')}"></iframe></div>
+  if (id) return `<div class="spot"><div class="spot-mount" data-id="${id}"><iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0" height="152" loading="lazy" frameborder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="${esc(songMeta(c) || 'Canción')}"></iframe></div></div>
     <a class="spot-open" href="https://open.spotify.com/track/${id}" target="_blank" rel="noopener">Abrir en Spotify</a>`;
   if (k.archivo) return `<button class="fplay" data-num="${c.num}"><span class="fbtn">${ICON.play}</span><span class="fmeta"><b>${esc(k.titulo || 'Canción de la carta')}</b><small>${esc(k.artista || '')}</small><span class="fbar"><i></i></span></span></button>`;
   return '';
 }
-function bindSongs() {
+// Spotify: API oficial del reproductor integrado, para poder darle a play y pararlo
+let spotApiP = null; const spotCtrls = new Set();
+function spotifyApi() {
+  if (!spotApiP) spotApiP = new Promise((res, rej) => {
+    window.onSpotifyIframeApiReady = api => res(api);
+    const s = document.createElement('script'); s.src = 'https://open.spotify.com/embed/iframe-api/v1'; s.async = true;
+    s.onerror = () => { spotApiP = null; rej(new Error('spotify')); }; document.head.appendChild(s);
+  });
+  return spotApiP;
+}
+async function mountSpotify(el, autoplay) {
+  try {
+    const api = await spotifyApi(); if (!el.isConnected) return;
+    const holder = document.createElement('div'); el.replaceChildren(holder);
+    api.createController(holder, { uri: 'spotify:track:' + el.dataset.id, width: '100%', height: 152 }, ctrl => {
+      if (!el.isConnected) { try { ctrl.destroy(); } catch { } return; }
+      spotCtrls.add(ctrl);
+      if (autoplay) { ctrl.addListener('ready', () => { try { ctrl.play(); } catch { } }); }
+    });
+  } catch { /* se queda el reproductor normal */ }
+}
+function stopMusic() {
+  try { player.pause(); } catch { } playingNum = null;
+  for (const c of spotCtrls) { try { c.pause(); c.destroy(); } catch { } }
+  spotCtrls.clear(); syncSongButtons();
+}
+// iPhone: el primer toque "desbloquea" el reproductor para que luego pueda sonar solo
+const SILENCIO = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+document.addEventListener('pointerdown', () => { if (player.src) return; player.src = SILENCIO; player.play().then(() => player.pause()).catch(() => { }); }, { once: true });
+function bindSongs({ autoplay = null } = {}) {
   document.querySelectorAll('.fplay').forEach(b => b.onclick = () => { const c = S.byNum.get(b.dataset.num); if (c) playFile(c); });
+  document.querySelectorAll('.song-panel .spot-mount').forEach(el => mountSpotify(el, !!autoplay));
+  if (autoplay?.cancion?.archivo) { if (playingNum !== autoplay.num || player.paused) playFile(autoplay); }
   syncSongButtons();
 }
 function viewRocola() {
@@ -402,7 +433,7 @@ function viewRocola() {
     }).join('')}</div>`);
   bindSongs();
   // carga el reproductor solo al abrir cada canción
-  document.querySelectorAll('details.track').forEach(d => d.addEventListener('toggle', () => { if (d.open) sfx('tap'); }));
+  document.querySelectorAll('details.track').forEach(d => d.addEventListener('toggle', () => { if (d.open) { sfx('tap'); const m = $('.spot-mount', d); if (m && !m.dataset.on) { m.dataset.on = 1; mountSpotify(m, true); } } }));
 }
 
 // ---------- ampliar con zoom ----------
@@ -1030,8 +1061,10 @@ function splash() {
 
 // ---------- router ----------
 function go(h) { if (location.hash.slice(1) === h) route(); else location.hash = h; }
+let lastRoute = null;
 function route() {
   const h = location.hash.slice(1);
+  if (h !== lastRoute) { if (h !== 'carta-' + playingNum) stopMusic(); lastRoute = h; }
   if (scanner && h !== 'escaner') scanner.close();
   if (/^sp-[a-z0-9]{10}$/i.test(h)) { try { history.replaceState(null, '', '#coleccion'); } catch { } viewColeccion(); handleCode(h.toLowerCase()); return; }
   if (!h.startsWith('figura-') && h !== 'grupo') closeViewer();
