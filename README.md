@@ -1,5 +1,7 @@
 # SAM PIECE 3D
 
+**Dirección:** https://sam-piece.vercel.app (los QR apuntan aquí: `https://sam-piece.vercel.app/#sp-xxxxxxxxxx`)
+
 Web app privada para la colección de 54 cartas SAM PIECE: escanear el QR de cada carta desbloquea su figura 3D.
 
 - **Sin base de datos:** el progreso se guarda en el propio teléfono (localStorage). Copia de seguridad desde *Perfil*.
