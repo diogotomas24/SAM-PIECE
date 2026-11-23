@@ -2,7 +2,9 @@
 // Rutas por fragmento: #coleccion, #carta-001, #figura-001, #escaner, #perfil, #sp-xxxxxxxxxx (QR)
 // Rutas ocultas para pruebas: #pruebas, #diagnostico, #grupo
 
-const VERSION = '0.1.0';
+import { startBackground, pauseBackground, requestGyro, unlockAudio, sfx, haptic, isSoundOn, setSound, waveFlag } from './fx.js';
+
+const VERSION = '0.2.0';
 const KEY = 'sampiece.v1';
 const $ = (s, el = document) => el.querySelector(s);
 const root = document.getElementById('root');
@@ -109,10 +111,33 @@ const ICON = {
     <path d="M19 19 L52 48 L81 81 L48 52Z" fill="url(#g)" opacity=".35"/><path d="M81 19 L52 52 L19 81 L48 48Z" fill="url(#g)" opacity=".35"/><circle cx="50" cy="50" r="5" fill="#060a18" stroke="url(#g)" stroke-width="2"/></svg>`,
   q: `<svg viewBox="0 0 60 80"><path d="M30 6a20 20 0 0 0-20 20h11a9 9 0 1 1 13 8c-6 3-9 7-9 14v4h11v-3c0-3 1-5 5-7a20 20 0 0 0-11-36zM24 60h12v12H24z" fill="#e8b54a"/></svg>`,
   sil: `<svg viewBox="0 0 100 140"><g fill="#060a18" opacity=".85"><circle cx="50" cy="34" r="22"/><path d="M28 22l8-14 6 10 8-14 8 14 6-10 8 14z"/><path d="M18 140c0-38 12-62 32-62s32 24 32 62z"/></g></svg>`,
+  lock: `<svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="#e8b54a" stroke-width="2"/><rect x="4" y="10" width="16" height="11" rx="2.5" fill="#e8b54a"/><circle cx="12" cy="15" r="1.8" fill="#060a18"/></svg>`,
+  shadow: `<svg viewBox="0 0 100 140" preserveAspectRatio="xMidYMax meet"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#24346b"/><stop offset="1" stop-color="#070c1f"/></linearGradient></defs>
+    <g fill="url(#sg)"><circle cx="50" cy="40" r="19"/><path d="M30 30l6-15 7 9 7-14 7 14 7-9 6 15z"/><path d="M14 140c0-40 14-70 36-70s36 30 36 70z"/></g></svg>`,
+  soundOn: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10v4h4l5 4V6L8 10z" fill="currentColor"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>`,
+  soundOff: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10v4h4l5 4V6L8 10z" fill="currentColor"/><path d="M17 9l5 6M22 9l-5 6"/></svg>`,
   grid: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><rect x="3" y="15" width="7" height="6" rx="1.5"/><rect x="14" y="15" width="7" height="6" rx="1.5"/></svg>`,
   scan: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg>`,
   user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>`,
 };
+
+// Emblema propio de SAM PIECE: calavera con cascos de gamer, balón de baloncesto y tibias
+const EMBLEM = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 300 200">
+  <defs><linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".5" stop-color="#e8b54a"/><stop offset="1" stop-color="#8a5d12"/></linearGradient>
+  <radialGradient id="fl" cx=".5" cy=".45" r=".7"><stop offset="0" stop-color="#1a2246"/><stop offset="1" stop-color="#05070f"/></radialGradient></defs>
+  <rect width="300" height="200" fill="url(#fl)"/><rect x="5" y="5" width="290" height="190" fill="none" stroke="url(#gd)" stroke-width="3"/>
+  <g transform="translate(150 104)">
+    <circle r="56" fill="#e8742a" opacity=".9"/><path d="M-56 0H56M0-56V56M-40-40C-15-15-15 15-40 40M40-40C15-15 15 15 40 40" stroke="#05070f" stroke-width="3" fill="none" opacity=".8"/>
+    <g stroke="#f4f2ec" stroke-width="13" stroke-linecap="round"><path d="M-62 46L62-46"/><path d="M-62-46L62 46"/></g>
+    <g fill="#f4f2ec"><circle cx="-66" cy="40" r="9"/><circle cx="-58" cy="52" r="9"/><circle cx="66" cy="-40" r="9"/><circle cx="58" cy="-52" r="9"/>
+      <circle cx="-66" cy="-40" r="9"/><circle cx="-58" cy="-52" r="9"/><circle cx="66" cy="40" r="9"/><circle cx="58" cy="52" r="9"/></g>
+    <path d="M-36-6a36 38 0 1 1 72 0c0 14-6 22-12 26v12h-48v-12c-6-4-12-12-12-26z" fill="#f4f2ec"/>
+    <ellipse cx="-14" cy="-4" rx="10" ry="12" fill="#05070f"/><ellipse cx="14" cy="-4" rx="10" ry="12" fill="#05070f"/>
+    <path d="M0 8l-6 10h12z" fill="#05070f"/><path d="M-14 26v10M-5 26v10M5 26v10M14 26v10" stroke="#05070f" stroke-width="3"/>
+    <path d="M-42-4a42 46 0 0 1 84 0" fill="none" stroke="url(#gd)" stroke-width="8"/>
+    <rect x="-52" y="-12" width="16" height="28" rx="6" fill="url(#gd)"/><rect x="36" y="-12" width="16" height="28" rx="6" fill="url(#gd)"/>
+    <path d="M-44 14c0 18 12 26 26 26" fill="none" stroke="url(#gd)" stroke-width="4"/><circle cx="-16" cy="40" r="5" fill="url(#gd)"/>
+  </g></svg>`;
 
 // ---------- rarezas -> animación ----------
 const TIERS = {
@@ -126,33 +151,41 @@ const RAREZA_A_TIER = { C: 'comun', UC: 'comun', R: 'comun', L: 'sr', SR: 'sr', 
 const tierOf = card => RAREZA_A_TIER[(card.rareza || '').toUpperCase()] || 'comun';
 
 // ---------- cartas ----------
+const RAREZA_CLASE = { C: 'comun', UC: 'comun', R: 'comun', L: 'sr', SR: 'sr', SEC: 'sec', SP: 'sec', MR: 'manga', MANGA: 'manga', SAM: 'samuel' };
+const rarityClass = card => 'r-' + (RAREZA_CLASE[(card.rareza || '').toUpperCase()] || (card.rareza ? 'sr' : 'none'));
+const SAM_STARS = '<div class="stars">' + [[12, 10], [82, 18], [20, 60], [88, 66], [50, 4]].map(([x, y], i) => `<i style="left:${x}%;top:${y}%;animation-delay:${i * .45}s"></i>`).join('') + '</div>';
 function cardHTML(card, { link = true, forceFront = false, isNew = false } = {}) {
   const open = forceFront || !!S.unlocked[card.num];
   const tag = link ? 'a' : 'div';
   const href = link ? ` href="#carta-${card.num}"` : '';
-  if (!open) return `<${tag} class="card"${href} aria-label="Carta ${card.num} bloqueada"><div class="face back"><div class="q">${ICON.q}</div><div class="n">Nº ${card.num}</div></div></${tag}>`;
+  if (!open) return `<${tag} class="card locked"${href} aria-label="Carta ${card.num} bloqueada"><div class="face back">
+    <div class="num">Nº ${card.num}</div><div class="sil">${ICON.shadow}</div><div class="fog"></div><div class="lock">${ICON.lock}</div></div></${tag}>`;
   const name = card.nombre || `Carta ${card.num}`;
-  return `<${tag} class="card${isNew ? ' new' : ''}"${href} aria-label="${esc(name)}"><div class="face front">
-    <div class="art">${card.imagen ? `<img src="${esc(card.imagen)}" alt="" style="width:100%;height:100%;object-fit:cover">` : ICON.sil}</div>
+  const rc = rarityClass(card);
+  return `<${tag} class="card open ${rc}${isNew ? ' new' : ''}"${href} aria-label="${esc(name)}"><div class="face front">
+    <div class="inner"><div class="art">${card.imagen ? `<img src="${esc(card.imagen)}" alt="">` : ICON.sil}</div>
+    <div class="meta"><b>${esc(name)}</b><span>Nº ${card.num}/054</span></div></div>
     ${card.rareza ? `<div class="badge">${esc(card.rareza)}</div>` : ''}
-    <div class="meta"><b>${esc(name)}</b><span>Nº ${card.num}/054</span></div></div></${tag}>`;
+    <div class="holo"></div><div class="glare"></div><div class="edge"></div>${rc === 'r-samuel' ? SAM_STARS : ''}</div></${tag}>`;
 }
 function backHTML() {
   return `<div class="card"><div class="face back" style="display:grid;place-items:center">
-    <div style="text-align:center"><div style="font-family:var(--title);font-weight:900;font-size:clamp(20px,6vw,30px);letter-spacing:.08em;color:var(--gold-2)">SAM<br>PIECE</div>
+    <div style="text-align:center"><div class="gold-text" style="font-family:var(--title);font-weight:900;font-size:clamp(20px,6vw,30px);letter-spacing:.08em">SAM<br>PIECE</div>
     <div style="width:46%;margin:10px auto 0">${ICON.compass.replace('class="compass"', '')}</div></div></div></div>`;
 }
 
 // ---------- vistas ----------
 function shell(active, inner) {
   root.innerHTML = `<div class="app">
-    <div class="top"><div class="brand">SAM PIECE<small>3D</small></div><div class="pill" id="cnt">${count()}/${S.cards.length}</div></div>
-    <div id="view">${inner}</div></div>
+    <div class="top"><div class="brand"><span class="gold-text">SAM PIECE</span><small>3D</small></div>
+      <div class="top-r"><button class="icon-btn" id="snd" aria-label="Sonido">${isSoundOn() ? ICON.soundOn : ICON.soundOff}</button><div class="pill" id="cnt">${count()}/${S.cards.length}</div></div></div>
+    <div id="view" class="fade-in">${inner}</div></div>
     <nav class="nav"><div class="nav-in">
       <a href="#coleccion" class="${active === 'coleccion' ? 'on' : ''}">${ICON.grid}Colección</a>
       <a href="#escaner" class="${active === 'escaner' ? 'on' : ''}">${ICON.scan}Escanear</a>
       <a href="#perfil" class="${active === 'perfil' ? 'on' : ''}">${ICON.user}Perfil</a>
     </div></nav>`;
+  $('#snd').onclick = () => { setSound(!isSoundOn()); $('#snd').innerHTML = isSoundOn() ? ICON.soundOn : ICON.soundOff; sfx('tap'); haptic(); };
 }
 function installBanner() {
   if (isStandalone()) return '';
@@ -161,36 +194,126 @@ function installBanner() {
   const how = isIOS ? 'toca <b>Compartir</b> y luego <b>Añadir a pantalla de inicio</b>' : 'usa el menú del navegador y elige <b>Instalar app</b>';
   return `<div class="banner" id="banner"><p>Instala SAM PIECE: ${how}. Así tu colección queda guardada en tu móvil.</p><button class="btn ghost small" id="nob">OK</button></div>`;
 }
+// Mapa de navegación: 12 islas, una por sobre
+const ISLANDS = Array.from({ length: 12 }, (_, i) => {
+  const x = 70 + i * 94, y = 100 + Math.sin(i * 1.25) * 38 + (i % 2 ? 6 : -6);
+  return { n: i + 1, x, y, r: 21 + ((i * 7) % 5) * 2.2, seed: i * 3.7 };
+});
+function islandPath(cx, cy, r, seed) {
+  let d = ''; const pts = 14;
+  for (let k = 0; k <= pts; k++) {
+    const a = k / pts * Math.PI * 2, rr = r * (0.78 + 0.22 * Math.sin(a * 3 + seed) + 0.1 * Math.cos(a * 5 + seed * 2));
+    const x = cx + Math.cos(a) * rr * 1.25, y = cy + Math.sin(a) * rr * 0.72;
+    d += (k ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
+  }
+  return d + 'Z';
+}
+let sobreFiltro = null;
+function islandState(n) {
+  const cards = S.cards.filter(c => c.sobre === n);
+  const got = cards.filter(c => S.unlocked[c.num]).length;
+  return { total: cards.length, got, done: cards.length > 0 && got === cards.length, started: got > 0 };
+}
+function mapHTML() {
+  const states = ISLANDS.map(is => islandState(is.n));
+  const cur = Math.max(0, states.findIndex(st => !st.done));
+  const route = ISLANDS.map((is, i) => (i ? 'L' : 'M') + is.x + ' ' + is.y).join('');
+  return `<div class="map" id="map"><div class="map-in"><div class="map-title">RUTA DE LOS 12 SOBRES</div>
+    <svg viewBox="0 0 1180 190" preserveAspectRatio="none">
+      <defs><radialGradient id="isl" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#3f6a52"/><stop offset=".6" stop-color="#25442f"/><stop offset="1" stop-color="#16261c"/></radialGradient>
+        <radialGradient id="sand" cx=".5" cy=".5" r=".5"><stop offset=".75" stop-color="#d9c08a"/><stop offset="1" stop-color="#d9c08a" stop-opacity="0"/></radialGradient>
+        <radialGradient id="glw" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f7d98b" stop-opacity=".7"/><stop offset="1" stop-color="#f7d98b" stop-opacity="0"/></radialGradient>
+        <filter id="fogf"><feGaussianBlur stdDeviation="6"/></filter></defs>
+      ${Array.from({ length: 22 }, (_, i) => `<path d="M${(i * 57) % 1180} ${20 + (i * 37) % 160}q8 -4 16 0t16 0" stroke="rgba(154,165,196,.18)" fill="none" stroke-width="1.4"/>`).join('')}
+      <path d="${route}" fill="none" stroke="#e8b54a" stroke-width="2" stroke-dasharray="6 7" opacity=".7"/>
+      ${ISLANDS.map((is, i) => {
+        const st = states[i];
+        const cls = `island${st.done ? ' done' : ''}${sobreFiltro === is.n ? ' sel' : ''}`;
+        const fog = !st.started && !st.done;
+        return `<g class="${cls}" data-sobre="${is.n}">
+          ${st.done ? `<ellipse class="halo" cx="${is.x}" cy="${is.y}" rx="${is.r * 2.2}" ry="${is.r * 1.5}" fill="url(#glw)"/>` : ''}
+          <path d="${islandPath(is.x, is.y + 3, is.r * 1.18, is.seed)}" fill="url(#sand)" opacity=".75"/>
+          <path class="ring" d="${islandPath(is.x, is.y, is.r, is.seed)}" fill="url(#isl)" stroke="${st.done ? '#f7d98b' : 'rgba(247,217,139,.35)'}" stroke-width="1.5"/>
+          <path d="M${is.x - 4} ${is.y - 2}v-16" stroke="#6b4a1c" stroke-width="2"/><path d="M${is.x - 4} ${is.y - 18}c-8 -2 -12 2 -14 6M${is.x - 4} ${is.y - 18}c8 -3 12 1 14 5M${is.x - 4} ${is.y - 18}c-2 -6 -8 -8 -12 -7" stroke="#4f8a5e" stroke-width="3" fill="none" stroke-linecap="round"/>
+          ${st.done ? `<path d="M${is.x + 8} ${is.y - 6}v-20" stroke="#e8b54a" stroke-width="2"/><path d="M${is.x + 8} ${is.y - 26}h14l-4 5 4 5h-14z" fill="#e8b54a"/>` : ''}
+          ${fog ? `<ellipse cx="${is.x}" cy="${is.y}" rx="${is.r * 1.6}" ry="${is.r}" fill="rgba(150,165,210,.38)" filter="url(#fogf)"/>` : ''}
+          <text class="lbl" x="${is.x}" y="${is.y + is.r + 18}">SOBRE ${is.n}</text>
+          <text class="cnt" x="${is.x}" y="${is.y + is.r + 32}">${st.total ? `${st.got}/${st.total}` : '?'}</text></g>`;
+      }).join('')}
+      <g class="ship" transform="translate(${ISLANDS[cur].x - 46} ${ISLANDS[cur].y - 44})">
+        <path d="M4 26h40l-6 10H10z" fill="#6b4a1c" stroke="#e8b54a" stroke-width="1.2"/><path d="M23 4v22" stroke="#e8b54a" stroke-width="2"/>
+        <path d="M24 6c10 3 14 9 12 17H24z" fill="#f4f2ec"/><path d="M22 8c-8 3-11 8-10 14h10z" fill="#dfe4ee"/><path d="M23 4h9l-2 3 2 3h-9z" fill="#05070f"/></g>
+    </svg></div></div>`;
+}
 function viewColeccion() {
   const n = count(), total = S.cards.length;
+  const visibles = sobreFiltro ? S.cards.filter(c => c.sobre === sobreFiltro) : S.cards;
   shell('coleccion', `
     ${installBanner()}
-    <div class="h"><h1>Colección</h1><span class="sub">Doce sobres · ${total} cartas</span></div>
-    <div class="progress"><div class="num">${n}<small>/${total}</small></div><div class="bar"><i style="width:${total ? (n / total * 100) : 0}%"></i></div></div>
+    <div class="h"><h1 class="gold-text">Colección</h1><span class="sub">Doce sobres · ${total} cartas</span></div>
+    <div class="progress"><div class="num gold-text">${n}<small>/${total}</small></div><div class="bar"><i style="width:${total ? (n / total * 100) : 0}%"></i></div></div>
+    ${mapHTML()}
+    ${sobreFiltro ? `<div class="filter-note"><span>Sobre ${sobreFiltro} · ${visibles.length} cartas</span><button class="btn ghost small" id="clearf">Ver todas</button></div>` : ''}
     ${S.storageOK ? '' : '<p><span class="tag bad">Sin guardado</span> Este navegador no permite guardar la colección (¿modo privado?).</p>'}
-    <div class="grid">${S.cards.map(c => cardHTML(c, { isNew: S.lastNew === c.num })).join('')}</div>`);
+    <div class="grid">${visibles.map(c => cardHTML(c, { isNew: S.lastNew === c.num })).join('')}</div>`);
   const nb = $('#nob'); if (nb) nb.onclick = () => { try { sessionStorage.setItem('sp-nobanner', '1'); } catch { } $('#banner').remove(); };
+  $('#clearf')?.addEventListener('click', () => { sobreFiltro = null; sfx('tap'); viewColeccion(); });
+  const map = $('#map');
+  if (map) {
+    const states = ISLANDS.map(is => islandState(is.n)); const cur = Math.max(0, states.findIndex(st => !st.done));
+    map.scrollLeft = Math.max(0, ISLANDS[sobreFiltro ? sobreFiltro - 1 : cur].x - map.clientWidth / 2);
+    map.addEventListener('click', e => {
+      const g = e.target.closest('.island'); if (!g) return;
+      const sb = +g.dataset.sobre; sfx('tap'); haptic();
+      if (!islandState(sb).total) { toast(`El sobre ${sb} aún no tiene cartas asignadas`); return; }
+      sobreFiltro = sobreFiltro === sb ? null : sb; viewColeccion();
+    });
+  }
   S.lastNew = null;
 }
 function viewFicha(num) {
   const c = S.byNum.get(num);
   if (!c) return go('coleccion');
   const u = S.unlocked[num];
-  const fecha = u ? new Date(u.t).toLocaleString('es-ES', { dateStyle: 'long', timeStyle: 'short' }) : null;
+  const fecha = u ? new Date(u.t).toLocaleDateString('es-ES', { dateStyle: 'long' }) : null;
+  const rz = { comun: 'Común', sr: 'Super Rare', sec: 'Secret Rare', manga: 'Manga Rare', samuel: 'Exclusiva de Samuel' }[rarityClass(c).slice(2)];
   shell('coleccion', `
-    <div class="h"><h1>Nº ${c.num}</h1><a class="btn ghost small" href="#coleccion">Volver</a></div>
+    <div class="h"><h1 class="gold-text">Nº ${c.num}</h1><a class="btn ghost small" href="#coleccion">Volver</a></div>
     <div class="ficha">
-      <div>${cardHTML(c, { link: false })}</div>
+      <div><div class="showcase" id="show"><div class="aura"></div><div class="stage3d">${cardHTML(c, { link: false })}</div><div class="shadow"></div></div>
+        ${u ? '<div class="hint-tilt">Inclina el móvil o arrastra la carta</div>' : ''}</div>
       <div>
-        ${u ? `<div class="panel"><h2>${esc(c.nombre || 'Carta ' + c.num)}</h2>
-          <dl class="dl"><dt>Rareza</dt><dd>${esc(c.rareza || 'Por definir')}</dd>
+        ${u ? `<div class="poster">
+          <div class="kicker">TRIPULACIÓN SAM PIECE</div>
+          <h2>RECOMPENSA</h2>
+          <div class="rule"></div>
+          <div class="name">${esc(c.nombre || 'Carta ' + c.num)}</div>
+          <div class="bounty"><span class="coin">S</span>${c.recompensa ? esc(Number(c.recompensa).toLocaleString('es-ES')) : '¿?.???.???'}</div>
+          <dl><dt>Rareza</dt><dd>${esc(c.rareza ? (rz || c.rareza) : 'Por definir')}</dd>
           <dt>Número</dt><dd>${c.num}/054</dd>
           <dt>Personajes</dt><dd>${c.personajes?.length ? esc(c.personajes.join(', ')) : 'Por definir'}</dd>
-          <dt>Desbloqueada</dt><dd>${esc(fecha)}</dd></dl></div>
-          <a class="btn" href="#figura-${c.num}" style="width:100%">Ver figura 3D</a>`
+          <dt>Sobre</dt><dd>${c.sobre ? 'Sobre ' + c.sobre : 'Por definir'}</dd>
+          <dt>Capturada</dt><dd>${esc(fecha)}</dd></dl>
+          <p class="quote">${c.frase ? '«' + esc(c.frase) + '»' : '«Frase por escribir»'}</p>
+          <div class="seal">SAM<br>PIECE</div></div>
+          <a class="btn" href="#figura-${c.num}" style="width:100%;margin-top:30px">Ver figura 3D</a>`
         : `<div class="panel"><h2>Carta bloqueada</h2><p>Encuentra esta carta en uno de tus sobres y escanea su código para desbloquear su figura.</p></div>
-           <a class="btn ghost" href="#escaner" style="width:100%">Escanear</a>`}
+           <a class="btn" href="#escaner" style="width:100%">Escanear</a>`}
       </div></div>`);
+  // arrastrar para inclinar la carta
+  const show = $('#show'), card = $('.card', show);
+  let drag = null;
+  show.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY }; show.setPointerCapture(e.pointerId); });
+  show.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const dx = Math.max(-1, Math.min(1, (e.clientX - drag.x) / 120)), dy = Math.max(-1, Math.min(1, (e.clientY - drag.y) / 120));
+    card.style.setProperty('--rx', (dx * 28).toFixed(1)); card.style.setProperty('--ry', (-dy * 24).toFixed(1));
+    card.style.setProperty('--tx', dx.toFixed(2)); card.style.setProperty('--ty', dy.toFixed(2));
+  });
+  const end = () => { if (!drag) return; drag = null; card.style.transition = 'transform .6s cubic-bezier(.2,1.4,.4,1)';
+    ['--rx', '--ry', '--tx', '--ty'].forEach(p => card.style.removeProperty(p)); setTimeout(() => card.style.transition = '', 600); };
+  show.addEventListener('pointerup', end); show.addEventListener('pointercancel', end);
+  if (u) sfx('shimmer');
 }
 function viewEscaner() {
   shell('escaner', `
@@ -252,6 +375,13 @@ function viewPerfil() {
     $('#cnt').textContent = `${count()}/${S.cards.length}`;
   };
 }
+function viewMuestrario() {
+  const demo = [['C', 'Común'], ['SR', 'Super Rare'], ['SEC', 'Secret Rare'], ['MR', 'Manga Rare'], ['SAM', 'Exclusiva']].map(([r, n], i) =>
+    ({ num: String(i + 1).padStart(3, '0'), nombre: n, rareza: r }));
+  shell('perfil', `<div class="h"><h1 class="gold-text">Muestrario</h1><a class="btn ghost small" href="#pruebas">Volver</a></div>
+    <p class="muted">Inclina el móvil para ver el brillo holográfico.</p>
+    <div class="grid">${demo.map(c => cardHTML(c, { link: false, forceFront: true })).join('')}</div>`);
+}
 function viewPruebas() {
   shell('perfil', `
     <div class="h"><h1>Pruebas</h1><a class="btn ghost small" href="#perfil">Volver</a></div>
@@ -260,10 +390,14 @@ function viewPruebas() {
         <select id="tnum">${S.cards.map(c => `<option value="${c.num}">Carta ${c.num}</option>`).join('')}</select>
         <select id="ttier">${Object.entries(TIERS).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('')}</select>
         <button class="btn small" id="tprev">Ver</button></div></div>
+    <div class="panel"><h2>Rarezas</h2><p>Muestra de los cinco marcos de carta.</p><a class="btn ghost small" href="#muestrario">Ver muestrario</a></div>
     <div class="panel"><h2>3D</h2><div class="row"><a class="btn ghost small" href="#figura-prueba">Figura de prueba</a><a class="btn ghost small" href="#grupo">Escena grupal</a></div></div>
     <div class="panel"><h2>Diagnóstico</h2><a class="btn ghost small" href="#diagnostico">Abrir diagnóstico</a></div>
     <div class="panel"><h2>Reiniciar</h2><p>Borra todas las cartas desbloqueadas de este teléfono.</p><button class="btn ghost small" id="treset">Reiniciar progreso</button></div>`);
-  $('#tprev').onclick = () => playUnlock(S.byNum.get($('#tnum').value), $('#ttier').value, { preview: true });
+  $('#tprev').onclick = () => {
+    const tier = $('#ttier').value, rz = { comun: 'C', sr: 'SR', sec: 'SEC', manga: 'MR', samuel: 'SAM' }[tier];
+    playUnlock({ ...S.byNum.get($('#tnum').value), rareza: rz }, tier, { preview: true });
+  };
   $('#treset').onclick = async () => {
     if (!(await dialog({ title: 'Reiniciar progreso', body: 'Se borrarán todas las cartas desbloqueadas de este teléfono.', ok: 'Reiniciar', cancel: 'Cancelar' }))) return;
     S.unlocked = {}; saveProgress(); toast('Progreso reiniciado'); viewPruebas();
@@ -293,7 +427,7 @@ function playUnlock(card, tierKey, { preview = false } = {}) {
     o.innerHTML = `<canvas></canvas><div class="stage hover"><div class="flip">${backHTML()}${cardHTML(card, { link: false, forceFront: true }).replace('class="card', 'class="card f')}</div></div>
       <div class="label">${esc(T.label)}<small>Nº ${card.num}/054</small></div>
       <div class="actions">${preview ? '<button class="btn" data-a="close">Cerrar</button>' : `<button class="btn ghost" data-a="ficha">Ver ficha</button><button class="btn" data-a="fig">Ver figura 3D</button>`}</div>`;
-    document.body.appendChild(o);
+    document.body.appendChild(o); sfx('build');
     const cv = $('canvas', o), ctx = cv.getContext('2d');
     const dpr = Math.min(devicePixelRatio || 1, 2);
     const resize = () => { cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; };
@@ -334,7 +468,7 @@ function playUnlock(card, tierKey, { preview = false } = {}) {
       ctx.globalAlpha = 1;
       if (!opened && el >= T.delay) {
         opened = true; $('.flip', o).classList.add('open'); burst(T.parts);
-        if (navigator.vibrate) try { navigator.vibrate(T.shake ? [40, 60, 80] : 30); } catch { }
+        sfx(T.manga ? 'manga' : T.gold || T.rays ? 'epic' : 'reveal'); haptic(T.shake ? 'heavy' : 'medium');
         if (T.shake && !reduce) { o.classList.add('shake'); setTimeout(() => o.classList.remove('shake'), 500); }
         if (T.gold) setTimeout(() => burst(T.parts / 2), 450);
         $('.label', o).classList.add('show'); $('.actions', o).classList.add('show');
@@ -381,7 +515,7 @@ async function openViewer(models, title) {
     <div class="stats"></div>
     <div class="tools"><button class="btn ghost small" data-a="rot">Girar: sí</button><button class="btn ghost small" data-a="reset">Centrar</button></div>`;
   $('.title3d', v).textContent = title;
-  document.body.appendChild(v);
+  document.body.appendChild(v); pauseBackground(true);
   const state = { el: v, raf: 0, disposed: false };
   viewer = state;
   v.addEventListener('click', e => {
@@ -466,7 +600,7 @@ async function openViewer(models, title) {
 }
 function closeViewer() {
   if (!viewer) return; viewer.disposed = true; cancelAnimationFrame(viewer.raf);
-  try { viewer.cleanup?.(); } catch { } viewer.el.remove(); viewer = null;
+  try { viewer.cleanup?.(); } catch { } viewer.el.remove(); viewer = null; pauseBackground(false);
 }
 
 // ---------- lector de QR ----------
@@ -574,11 +708,19 @@ async function viewDiagnostico() {
 // ---------- splash ----------
 function splash() {
   const s = document.createElement('div'); s.className = 'splash';
-  s.innerHTML = `${ICON.compass}<div class="logo">SAM<br>PIECE<span>3D</span></div>
-    <p>La colección privada de Samuel. Abre tus sobres, escanea cada carta y da vida a tu tripulación.</p>
-    <button class="btn">Entrar a la colección</button>`;
-  $('.btn', s).onclick = () => { s.remove(); try { sessionStorage.setItem('sp-splash', '1'); } catch { } };
+  s.innerHTML = `<canvas class="flag"></canvas>
+    <div class="cmp"><div class="ring">${ICON.compass.replace('class="compass"', 'style="width:100%;height:100%"').replace(/<path d="M50 6[^>]*>/, '')}</div>
+      <div class="needle"><svg viewBox="0 0 100 100" style="width:100%;height:100%"><path d="M50 8 L57 50 L50 56 L43 50Z" fill="#f7d98b"/><path d="M50 92 L56 50 L50 44 L44 50Z" fill="#a8781f"/><circle cx="50" cy="50" r="4" fill="#060a18" stroke="#f7d98b" stroke-width="2"/></svg></div></div>
+    <div class="logo emboss"><span class="gold-text sheen">SAM<br>PIECE</span><span class="sub gold-text">3D</span></div>
+    <p class="tag">La colección privada de Samuel</p>
+    <div class="cta">TOCA PARA ZARPAR</div><div class="flash"></div>`;
   document.body.appendChild(s);
+  const stopFlag = waveFlag($('canvas.flag', s), EMBLEM);
+  s.addEventListener('click', () => {
+    unlockAudio(); requestGyro(); sfx('whoosh'); haptic('medium');
+    s.classList.add('out'); try { sessionStorage.setItem('sp-splash', '1'); } catch { }
+    setTimeout(() => { stopFlag(); s.remove(); }, 900);
+  }, { once: true });
 }
 
 // ---------- router ----------
@@ -600,11 +742,14 @@ function route() {
   else if (h === 'escaner') viewEscaner();
   else if (h === 'perfil') viewPerfil();
   else if (h === 'pruebas') viewPruebas();
+  else if (h === 'muestrario') viewMuestrario();
   else if (h === 'diagnostico') viewDiagnostico();
   else viewColeccion();
   scrollTo(0, 0);
 }
 addEventListener('hashchange', route);
+document.addEventListener('click', e => { if (e.target.closest('.nav a')) { sfx('nav'); haptic(); } else if (e.target.closest('.card.open, .btn')) sfx('tap'); });
+document.addEventListener('pointerdown', () => { unlockAudio(); requestGyro(); }, { once: true });
 addEventListener('storage', e => { if (e.key === KEY) { loadProgress(); route(); } });
 
 // ---------- arranque ----------
@@ -613,6 +758,7 @@ async function boot() {
     const r = await fetch('/cards.json'); const data = await r.json();
     S.cards = data.cartas; S.cards.forEach(c => S.byNum.set(c.num, c));
   } catch { root.innerHTML = `<div class="app"><div class="panel"><h2>Error</h2><p>No se pudo cargar la colección. Comprueba la conexión y vuelve a abrir la app.</p></div></div>`; return; }
+  startBackground(document.getElementById('bg'));
   loadProgress(); askPersist();
   let seen = false; try { seen = !!sessionStorage.getItem('sp-splash'); } catch { }
   if (!location.hash && !seen) splash();
