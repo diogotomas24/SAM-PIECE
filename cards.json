@@ -1,0 +1,599 @@
+{
+ "version": "prototipo-1",
+ "cartas": [
+  {
+   "id": 1,
+   "num": "001",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "d9cc136eca11ffbafee02b82b6dc5c68d142371d130b3f639a9d156b6a798fe9"
+  },
+  {
+   "id": 2,
+   "num": "002",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "e0cc906e2fb8653cec394c30187c78eacca4a62d35f05974f83f8cb881fa3df4"
+  },
+  {
+   "id": 3,
+   "num": "003",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "411d3725d58f37e845ad53c68d73b32b249dabd9fa0477bdfe20b9e918bb40a4"
+  },
+  {
+   "id": 4,
+   "num": "004",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "fd3e9dc186c22062b1da8c6d48ab0100147e6cca611b42b88569f1897afffbb7"
+  },
+  {
+   "id": 5,
+   "num": "005",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "36f430d33fcccec6ea5b0b08db0259f0588f371a582e4f5e4543e6ec21157f87"
+  },
+  {
+   "id": 6,
+   "num": "006",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "de782611e5d0a88fb4f5005f005c58c310564f11b0d8b9d7e09ddd2d5e8df9bf"
+  },
+  {
+   "id": 7,
+   "num": "007",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "80f14eeb926e9fca86f62d3c7f0f19f8e0831f00290365925ecd95566a8c6721"
+  },
+  {
+   "id": 8,
+   "num": "008",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "7c6b4368fc7441cab7f13681de2140f1e66a118c85835962a2a3dc011d262d90"
+  },
+  {
+   "id": 9,
+   "num": "009",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "e20c426cf4aaee4a2a2fff7fbc651e47f35b5b7716d543e80b410e98f1b45d9b"
+  },
+  {
+   "id": 10,
+   "num": "010",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "0af8fda89318e4aef9d4c47a577fd8c542e67b85c2c63663c57148047586b662"
+  },
+  {
+   "id": 11,
+   "num": "011",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "d228c5efe63b573bf8c0daae42a3807984ff03b007ad2fbcb660f7f2637d4156"
+  },
+  {
+   "id": 12,
+   "num": "012",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "11d151bba4aed563e9cdf091182cff65c3f76e7dc06ecc48cb8b1503c67433df"
+  },
+  {
+   "id": 13,
+   "num": "013",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "73577418f1276b639b4f8d1812fa2a535c6a7f5a10e77f14eb9faf8148a4a2e5"
+  },
+  {
+   "id": 14,
+   "num": "014",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "f22e959bae4f75e4118ec6b1925b1350bbe10f50643d8efe739bc09643ab1d07"
+  },
+  {
+   "id": 15,
+   "num": "015",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "645227e744a61da1baf1a7d3ce115a56bba289ab771105360d19679c507c78a8"
+  },
+  {
+   "id": 16,
+   "num": "016",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "6e04ed0c7bce6c89d22fd5a9716f041be7c9e63e378c99218d28249d1b3ea867"
+  },
+  {
+   "id": 17,
+   "num": "017",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "be0d1d6d04a156b8ff8c050e053890325d420be14ddd08c4855004de060c380b"
+  },
+  {
+   "id": 18,
+   "num": "018",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "8cf0b813287f08a550cfec6cba4f4c7c31c29946d551c60c8b37076af4f877cc"
+  },
+  {
+   "id": 19,
+   "num": "019",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "4bff5f435ac947523a6a0ee6eb35cd18b295b05c63bf3117b97063275ea5714d"
+  },
+  {
+   "id": 20,
+   "num": "020",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "dbb1bea01b61da5f3b4b4868b8e7a04ddaae335eaed36db3cf3fb3d3d2c70b97"
+  },
+  {
+   "id": 21,
+   "num": "021",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "71c518e033a204d0f1120c2b75a697256f3724ddf84fa057f196a6a65570bc9e"
+  },
+  {
+   "id": 22,
+   "num": "022",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "a7509c81f12227177686274fa31e11e3cfcc64f06fb1c75b0e13f52c4d3135ba"
+  },
+  {
+   "id": 23,
+   "num": "023",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "6903372497086f7c4b8a5024d9bb59205da9b477a4343c508be927bd8a6e3714"
+  },
+  {
+   "id": 24,
+   "num": "024",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "5ec3a8dec085068e1ece45b8bfec1807289100d350a6d645631e26365b383f88"
+  },
+  {
+   "id": 25,
+   "num": "025",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "4c5c7014e5d6c957f013ab537f6a415afcb249d615786aa62b32019e0759452d"
+  },
+  {
+   "id": 26,
+   "num": "026",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "bb854a71978329e578256bad8bb84dbed832ed0802a10b24f0a364271cf71c70"
+  },
+  {
+   "id": 27,
+   "num": "027",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "31a8ee26a199103921714a9a27377e0dcf1248f3426d62715ea079305f0ec2a1"
+  },
+  {
+   "id": 28,
+   "num": "028",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "185f40093ba8a6a141c37a4221a9794b3f1d2cb8718626a6b0764b6674aebc43"
+  },
+  {
+   "id": 29,
+   "num": "029",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "a61405ae1b87d8c1c68b9df1d31df4bfee3175f65309c35dced1f8382c332f84"
+  },
+  {
+   "id": 30,
+   "num": "030",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "93ef4ee4b2f8f456851189d2c656665dc23fa840f8dc6198941c6fcf1efde897"
+  },
+  {
+   "id": 31,
+   "num": "031",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "b71745a5ba1b826f80127560a822a636e46279967476390cef33191bcfa629fb"
+  },
+  {
+   "id": 32,
+   "num": "032",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "e27eb6a4bb7fbb276ebb34566fc8a6cab811a003db77ba523e19c21e35f33fac"
+  },
+  {
+   "id": 33,
+   "num": "033",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "5920f362d3bf47ec3ec3e5cb782399d40585c61c7470e0a58c220fb82849acfa"
+  },
+  {
+   "id": 34,
+   "num": "034",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "50e9cd2664cb8816d91bb5743ca784b42ae99005f60807777bf488fcdf59d099"
+  },
+  {
+   "id": 35,
+   "num": "035",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "df0c3a418b8e9fde58d1a2c701488547867cd362f564c32888c57c52afa86003"
+  },
+  {
+   "id": 36,
+   "num": "036",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "aed8f62bd811da0d27bb382290523b2c6d6cfc9203d8457c16a4c360f3790611"
+  },
+  {
+   "id": 37,
+   "num": "037",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "24a8553089e5d333d97a818f853f2285a9f1d14721bb82541c552147a6d34564"
+  },
+  {
+   "id": 38,
+   "num": "038",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "88e55ab15646144cd1dcd764b98bd2c1365d8d6b9e74a56db77ef8d2284ffbe8"
+  },
+  {
+   "id": 39,
+   "num": "039",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "321544a7aa73fa188aa2602e74bffc3edac904389e625307ddb41ca9cb9f6c6a"
+  },
+  {
+   "id": 40,
+   "num": "040",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "8a9e2fe7cbaa0d85bfbde74714c9894db755e010cdcb866455d9acdc15466c46"
+  },
+  {
+   "id": 41,
+   "num": "041",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "2fd01f5470625f1f7e3e892295f2cdb5126b228ce59bc814d7194ec0d605ccff"
+  },
+  {
+   "id": 42,
+   "num": "042",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "f6d87046c32cb69e4800dad9ad67bee442b2f2d4fbc4e1d60a37ebd188c7f50e"
+  },
+  {
+   "id": 43,
+   "num": "043",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "b1851f664a54a49e449f8f5e484bab3e9a6a6c40296f4702a408921a1ebb960e"
+  },
+  {
+   "id": 44,
+   "num": "044",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "ac504ad7bb37963a9bc9cdc1fd7e895ac679cdaf8a2aad6c9f84bcf085127aae"
+  },
+  {
+   "id": 45,
+   "num": "045",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "819c6d8f91e6285d48aab3330d7fd83f9eb41e085c1f4d54e45a0ec1b2d9817b"
+  },
+  {
+   "id": 46,
+   "num": "046",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "c9edcf0fa27024d813305d7de76b21c58869c4b5ae4800b6593b023bfb93af79"
+  },
+  {
+   "id": 47,
+   "num": "047",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "8634cf728c87175b0c3053dffbca95b943a95cfc57f6f673f486fecaa2da6755"
+  },
+  {
+   "id": 48,
+   "num": "048",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "ed3eb89894068eacbe0219e4ffe13be9d014ce1e88252e31ea6a60c9c10cb57e"
+  },
+  {
+   "id": 49,
+   "num": "049",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "1d46246ad217c96414de0e060554c4a6161c067000d285985d2d4bd3fb652680"
+  },
+  {
+   "id": 50,
+   "num": "050",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "f243d8b01ce695d4f927445c64279913c2ba3029acc4c26a6438c3e6c4d7801a"
+  },
+  {
+   "id": 51,
+   "num": "051",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "ba461a2cdd6c34ac80f79f5892b6f213d7b1ed98206afc7d5967ae7e19a42154"
+  },
+  {
+   "id": 52,
+   "num": "052",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "3a2e389d5ecf8e8356623c6d6c8c6cf693a3e8f8a8640fce2b9c8863d2bdeee0"
+  },
+  {
+   "id": 53,
+   "num": "053",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "40e11ca5f774425ec3eaa9b53fa8b185b9f7300a81eba38702fc4e4adf1fce73"
+  },
+  {
+   "id": 54,
+   "num": "054",
+   "nombre": null,
+   "personajes": [],
+   "rareza": null,
+   "modelos": [
+    "models/prueba.glb"
+   ],
+   "h": "38c3e70c6a90640dbef6cc9401135e8c3010429d40d7a027030f432a6232c881"
+  }
+ ]
+}
