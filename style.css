@@ -229,7 +229,7 @@ textarea{font:inherit;font-size:14px;width:100%;min-height:90px;color:var(--whit
 .hint-tilt{text-align:center;color:var(--muted);font-size:14px;letter-spacing:.08em;margin-top:2px}
 
 /* cartel de recompensa (diseño propio) */
-.poster{position:relative;padding:22px 20px 20px;border-radius:6px;color:#2b1a08;
+.poster{position:relative;margin-top:6px;padding:22px 20px 20px;border-radius:6px;color:#2b1a08;
   background:
    radial-gradient(120% 90% at 50% 40%,rgba(255,250,235,.0),rgba(120,80,30,.35) 100%),
    repeating-linear-gradient(0deg,rgba(120,80,30,.05) 0 2px,transparent 2px 5px),
@@ -435,7 +435,8 @@ textarea{font:inherit;font-size:14px;width:100%;min-height:90px;color:var(--whit
 .treasure.open .cel-k,.treasure.open .cel-t{opacity:1}
 
 /* ---------- canciones y rocola ---------- */
-.song-panel{margin-top:30px}
+.song-panel{margin-top:16px}
+.song-panel .tap-hint{margin-left:auto;font-family:var(--ui);font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-2);animation:pulse 1.8s ease-in-out infinite}
 .song-panel h2{display:flex;align-items:center;gap:8px}
 .song-panel h2 svg{width:18px;height:18px}
 .spot iframe{display:block;width:100%;border:0;border-radius:12px;background:#121212}

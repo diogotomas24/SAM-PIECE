@@ -4,7 +4,7 @@
 
 import { startBackground, pauseBackground, requestGyro, unlockAudio, sfx, haptic, isSoundOn, setSound, waveFlag } from './fx.js';
 
-const VERSION = '0.4.1';
+const VERSION = '0.4.2';
 const KEY = 'sampiece.v1';
 const $ = (s, el = document) => el.querySelector(s);
 const root = document.getElementById('root');
@@ -312,7 +312,8 @@ function viewFicha(num) {
           ${c.imagen ? `<button class="tool" id="bzoom">${ICON.zoom}<span>Ampliar</span></button><button class="tool" id="bsave">${ICON.save}<span>Guardar</span></button>` : ''}
           <button class="tool" id="bflip">${ICON.flip}<span>Mensaje</span></button>
           ${c.audio ? `<button class="tool" id="baudio">${ICON.play}<span>Nota de voz</span></button>` : ''}
-        </div>` : ''}</div>
+        </div>
+        ${c.cancion ? `<div class="panel song-panel"><h2>${ICON.music} Banda sonora${c.cancion.spotify ? '<span class="tap-hint">Dale al play ▸</span>' : ''}</h2>${songPlayer(c)}<a class="rocola-link" href="#rocola">Abrir la rocola</a></div>` : ''}` : ''}</div>
       <div>
         ${u ? `<div class="poster">
           <div class="kicker">TRIPULACIÓN SAM PIECE</div>
@@ -327,7 +328,6 @@ function viewFicha(num) {
           <dt>Capturada</dt><dd>${esc(fecha)}</dd></dl>
           <p class="quote">${c.frase ? '«' + esc(c.frase) + '»' : '«Frase por escribir»'}</p>
           <div class="seal">SAM<br>PIECE</div></div>
-          ${c.cancion ? `<div class="panel song-panel"><h2>${ICON.music} Banda sonora</h2>${songPlayer(c)}<a class="rocola-link" href="#rocola">Abrir la rocola</a></div>` : ''}
           ${c.modelos?.length ? `<a class="btn" href="#figura-${c.num}" style="width:100%;margin-top:30px">Ver figura 3D</a>` : ''}`
         : `<div class="panel"><h2>Carta bloqueada</h2><p>Encuentra esta carta en uno de tus sobres y escanea su código para desbloquearla.</p></div>
            <a class="btn" href="#escaner" style="width:100%">Escanear</a>`}
