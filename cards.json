@@ -105,34 +105,40 @@
   {
    "id": 5,
    "num": "005",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Hui",
+   "personajes": [
+    "Hui"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/005.webp",
    "modelos": [],
    "h": "36f430d33fcccec6ea5b0b08db0259f0588f371a582e4f5e4543e6ec21157f87",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/005-mini.webp"
   },
   {
    "id": 6,
    "num": "006",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Hui",
+   "personajes": [
+    "Hui"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/006.webp",
    "modelos": [],
    "h": "de782611e5d0a88fb4f5005f005c58c310564f11b0d8b9d7e09ddd2d5e8df9bf",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/006-mini.webp"
   },
   {
    "id": 7,
