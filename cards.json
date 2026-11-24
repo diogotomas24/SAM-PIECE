@@ -656,34 +656,40 @@
   {
    "id": 34,
    "num": "034",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Fernández",
+   "personajes": [
+    "Fernández"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/034.webp",
    "modelos": [],
    "h": "50e9cd2664cb8816d91bb5743ca784b42ae99005f60807777bf488fcdf59d099",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/034-mini.webp"
   },
   {
    "id": 35,
    "num": "035",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Fernández",
+   "personajes": [
+    "Fernández"
+   ],
+   "rareza": "UC",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/035.webp",
    "modelos": [],
    "h": "df0c3a418b8e9fde58d1a2c701488547867cd362f564c32888c57c52afa86003",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/035-mini.webp"
   },
   {
    "id": 36,
