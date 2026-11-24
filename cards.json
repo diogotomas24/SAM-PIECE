@@ -561,50 +561,59 @@
   {
    "id": 29,
    "num": "029",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Kitty",
+   "personajes": [
+    "Kitty"
+   ],
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/029.webp",
    "modelos": [],
    "h": "a61405ae1b87d8c1c68b9df1d31df4bfee3175f65309c35dced1f8382c332f84",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/029-mini.webp"
   },
   {
    "id": 30,
    "num": "030",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Kitty",
+   "personajes": [
+    "Kitty"
+   ],
+   "rareza": "R",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/030.webp",
    "modelos": [],
    "h": "93ef4ee4b2f8f456851189d2c656665dc23fa840f8dc6198941c6fcf1efde897",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/030-mini.webp"
   },
   {
    "id": 31,
    "num": "031",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Kitty",
+   "personajes": [
+    "Kitty"
+   ],
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/031.webp",
    "modelos": [],
    "h": "b71745a5ba1b826f80127560a822a636e46279967476390cef33191bcfa629fb",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/031-mini.webp"
   },
   {
    "id": 32,
