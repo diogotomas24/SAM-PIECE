@@ -276,66 +276,78 @@
   {
    "id": 14,
    "num": "014",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Jairo",
+   "personajes": [
+    "Jairo"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/014.webp",
    "modelos": [],
    "h": "f22e959bae4f75e4118ec6b1925b1350bbe10f50643d8efe739bc09643ab1d07",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/014-mini.webp"
   },
   {
    "id": 15,
    "num": "015",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Jairo",
+   "personajes": [
+    "Jairo"
+   ],
+   "rareza": "UC",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/015.webp",
    "modelos": [],
    "h": "645227e744a61da1baf1a7d3ce115a56bba289ab771105360d19679c507c78a8",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/015-mini.webp"
   },
   {
    "id": 16,
    "num": "016",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Jairo",
+   "personajes": [
+    "Jairo"
+   ],
+   "rareza": "SP",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/016.webp",
    "modelos": [],
    "h": "6e04ed0c7bce6c89d22fd5a9716f041be7c9e63e378c99218d28249d1b3ea867",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/016-mini.webp"
   },
   {
    "id": 17,
    "num": "017",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Jairo",
+   "personajes": [
+    "Jairo"
+   ],
+   "rareza": "R",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/017.webp",
    "modelos": [],
    "h": "be0d1d6d04a156b8ff8c050e053890325d420be14ddd08c4855004de060c380b",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/017-mini.webp"
   },
   {
    "id": 18,
