@@ -13,7 +13,7 @@ def radio_esquina(im):
 
 def procesar(src, num):
     im = Image.open(src).convert('RGB'); W, H = im.size
-    r = int(radio_esquina(im) / (1 - 0.7071)) + 2
+    r = max(int(radio_esquina(im) / (1 - 0.7071)) + 2, round(W * 0.045))
     m = Image.new('L', (W * 4, H * 4), 0)
     ImageDraw.Draw(m).rounded_rectangle((0, 0, W * 4 - 1, H * 4 - 1), radius=r * 4, fill=255)
     im.putalpha(m.resize((W, H), Image.LANCZOS))
