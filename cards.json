@@ -181,50 +181,59 @@
   {
    "id": 9,
    "num": "009",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Teron",
+   "personajes": [
+    "Teron"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/009.webp",
    "modelos": [],
    "h": "e20c426cf4aaee4a2a2fff7fbc651e47f35b5b7716d543e80b410e98f1b45d9b",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/009-mini.webp"
   },
   {
    "id": 10,
    "num": "010",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Teron",
+   "personajes": [
+    "Teron"
+   ],
+   "rareza": "MR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/010.webp",
    "modelos": [],
    "h": "0af8fda89318e4aef9d4c47a577fd8c542e67b85c2c63663c57148047586b662",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/010-mini.webp"
   },
   {
    "id": 11,
    "num": "011",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Teron",
+   "personajes": [
+    "Teron"
+   ],
+   "rareza": "R",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/011.webp",
    "modelos": [],
    "h": "d228c5efe63b573bf8c0daae42a3807984ff03b007ad2fbcb660f7f2637d4156",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/011-mini.webp"
   },
   {
    "id": 12,
