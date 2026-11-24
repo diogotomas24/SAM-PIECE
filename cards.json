@@ -238,34 +238,40 @@
   {
    "id": 12,
    "num": "012",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Lacal",
+   "personajes": [
+    "Lacal"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/012.webp",
    "modelos": [],
    "h": "11d151bba4aed563e9cdf091182cff65c3f76e7dc06ecc48cb8b1503c67433df",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/012-mini.webp"
   },
   {
    "id": 13,
    "num": "013",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Lacal",
+   "personajes": [
+    "Lacal"
+   ],
+   "rareza": "P",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/013.webp",
    "modelos": [],
    "h": "73577418f1276b639b4f8d1812fa2a535c6a7f5a10e77f14eb9faf8148a4a2e5",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/013-mini.webp"
   },
   {
    "id": 14,

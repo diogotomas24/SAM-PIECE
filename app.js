@@ -181,13 +181,13 @@ const TIERS = {
   manga: { label: 'Manga Rare', parts: 0, rays: false, shake: true, delay: 1500, manga: true },
   samuel: { label: 'Exclusiva de Samuel', parts: 320, rays: true, shake: true, delay: 2000, gold: true },
 };
-const RAREZA_A_TIER = { C: 'comun', UC: 'comun', R: 'comun', L: 'sr', SR: 'sr', SEC: 'sec', SP: 'sec', MR: 'manga', MANGA: 'manga', SAM: 'samuel' };
-const RAREZA_NOMBRE = { C: 'Común', UC: 'Infrecuente', R: 'Rara', L: 'Leader', SR: 'Super Rare', SEC: 'Secret Rare', SP: 'Especial', MR: 'Manga Rare', MANGA: 'Manga Rare', SAM: 'Exclusiva de Samuel' };
+const RAREZA_A_TIER = { C: 'comun', UC: 'comun', R: 'comun', L: 'sr', SR: 'sr', P: 'sr', SEC: 'sec', SP: 'sec', MR: 'manga', MANGA: 'manga', SAM: 'samuel' };
+const RAREZA_NOMBRE = { C: 'Común', UC: 'Infrecuente', R: 'Rara', L: 'Leader', SR: 'Super Rare', SEC: 'Secret Rare', SP: 'Especial', P: 'Promo', MR: 'Manga Rare', MANGA: 'Manga Rare', SAM: 'Exclusiva de Samuel' };
 const rarezaNombre = card => RAREZA_NOMBRE[(card.rareza || '').toUpperCase()] || card.rareza || null;
 const tierOf = card => RAREZA_A_TIER[(card.rareza || '').toUpperCase()] || 'comun';
 
 // ---------- cartas ----------
-const RAREZA_CLASE = { C: 'comun', UC: 'comun', R: 'comun', L: 'sr', SR: 'sr', SEC: 'sec', SP: 'sec', MR: 'manga', MANGA: 'manga', SAM: 'samuel' };
+const RAREZA_CLASE = { C: 'comun', UC: 'comun', R: 'comun', L: 'sr', SR: 'sr', P: 'sr', SEC: 'sec', SP: 'sec', MR: 'manga', MANGA: 'manga', SAM: 'samuel' };
 const rarityClass = card => 'r-' + (RAREZA_CLASE[(card.rareza || '').toUpperCase()] || (card.rareza ? 'sr' : 'none'));
 const SAM_STARS = '<div class="stars">' + [[12, 10], [82, 18], [20, 60], [88, 66], [50, 4]].map(([x, y], i) => `<i style="left:${x}%;top:${y}%;animation-delay:${i * .45}s"></i>`).join('') + '</div>';
 function cardHTML(card, { link = true, forceFront = false, isNew = false } = {}) {
