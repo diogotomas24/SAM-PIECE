@@ -143,34 +143,40 @@
   {
    "id": 7,
    "num": "007",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Prysas",
+   "personajes": [
+    "Prysas"
+   ],
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/007.webp",
    "modelos": [],
    "h": "80f14eeb926e9fca86f62d3c7f0f19f8e0831f00290365925ecd95566a8c6721",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/007-mini.webp"
   },
   {
    "id": 8,
    "num": "008",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Prysas",
+   "personajes": [
+    "Prysas"
+   ],
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/008.webp",
    "modelos": [],
    "h": "7c6b4368fc7441cab7f13681de2140f1e66a118c85835962a2a3dc011d262d90",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/008-mini.webp"
   },
   {
    "id": 9,
