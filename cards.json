@@ -48,16 +48,17 @@
    "num": "002",
    "nombre": null,
    "personajes": [],
-   "rareza": null,
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/002.webp",
    "modelos": [],
    "h": "e0cc906e2fb8653cec394c30187c78eacca4a62d35f05974f83f8cb881fa3df4",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/002-mini.webp"
   },
   {
    "id": 3,
