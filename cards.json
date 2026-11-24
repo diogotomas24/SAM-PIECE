@@ -409,34 +409,40 @@
   {
    "id": 21,
    "num": "021",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Luis Pacheco",
+   "personajes": [
+    "Luis Pacheco"
+   ],
+   "rareza": "SEC",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/021.webp",
    "modelos": [],
    "h": "71c518e033a204d0f1120c2b75a697256f3724ddf84fa057f196a6a65570bc9e",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/021-mini.webp"
   },
   {
    "id": 22,
    "num": "022",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Luis Pacheco",
+   "personajes": [
+    "Luis Pacheco"
+   ],
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/022.webp",
    "modelos": [],
    "h": "a7509c81f12227177686274fa31e11e3cfcc64f06fb1c75b0e13f52c4d3135ba",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/022-mini.webp"
   },
   {
    "id": 23,
