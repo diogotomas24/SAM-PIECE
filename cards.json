@@ -447,50 +447,59 @@
   {
    "id": 23,
    "num": "023",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Rami",
+   "personajes": [
+    "Rami"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/023.webp",
    "modelos": [],
    "h": "6903372497086f7c4b8a5024d9bb59205da9b477a4343c508be927bd8a6e3714",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/023-mini.webp"
   },
   {
    "id": 24,
    "num": "024",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Rami",
+   "personajes": [
+    "Rami"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/024.webp",
    "modelos": [],
    "h": "5ec3a8dec085068e1ece45b8bfec1807289100d350a6d645631e26365b383f88",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/024-mini.webp"
   },
   {
    "id": 25,
    "num": "025",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Rami",
+   "personajes": [
+    "Rami"
+   ],
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/025.webp",
    "modelos": [],
    "h": "4c5c7014e5d6c957f013ab537f6a415afcb249d615786aa62b32019e0759452d",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/025-mini.webp"
   },
   {
    "id": 26,
