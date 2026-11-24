@@ -129,7 +129,7 @@ export function startBackground(cv) {
     const horizon = H * (0.62 + py * 0.01);
     // cielo
     const sky = ctx.createLinearGradient(0, 0, 0, horizon);
-    sky.addColorStop(0, '#02040c'); sky.addColorStop(0.55, '#0a1434'); sky.addColorStop(1, '#1b2b62');
+    sky.addColorStop(0, '#030a14'); sky.addColorStop(0.55, '#081a2e'); sky.addColorStop(1, '#16314d');
     ctx.fillStyle = sky; ctx.fillRect(0, 0, W, horizon + 2);
     // estrellas
     for (const s of stars) {
@@ -159,7 +159,7 @@ export function startBackground(cv) {
     }
     // mar
     const sea = ctx.createLinearGradient(0, horizon, 0, H);
-    sea.addColorStop(0, '#13214e'); sea.addColorStop(0.35, '#08112c'); sea.addColorStop(1, '#02040b');
+    sea.addColorStop(0, '#112a44'); sea.addColorStop(0.35, '#071628'); sea.addColorStop(1, '#030a14');
     ctx.fillStyle = sea; ctx.fillRect(0, horizon, W, H - horizon);
     // reflejo de la luna en el agua
     const rw = W * 0.18;

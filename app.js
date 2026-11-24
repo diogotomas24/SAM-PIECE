@@ -4,7 +4,7 @@
 
 import { startBackground, pauseBackground, requestGyro, unlockAudio, sfx, haptic, isSoundOn, setSound, waveFlag } from './fx.js';
 
-const VERSION = '0.4.2';
+const VERSION = '0.5.0';
 const KEY = 'sampiece.v1';
 const $ = (s, el = document) => el.querySelector(s);
 const root = document.getElementById('root');
@@ -124,6 +124,12 @@ const ICON = {
   flip: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg>`,
   music: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="17" cy="16" r="3" fill="currentColor"/></svg>`,
   pause: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>`,
+  home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5.2"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5M4.9 4.9l3.5 3.5M15.6 15.6l3.5 3.5M4.9 19.1l3.5-3.5M15.6 8.4l3.5-3.5"/><circle cx="12" cy="2.4" r="1" fill="currentColor"/><circle cx="12" cy="21.6" r="1" fill="currentColor"/><circle cx="2.4" cy="12" r="1" fill="currentColor"/><circle cx="21.6" cy="12" r="1" fill="currentColor"/></svg>`,
+  album: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="11" height="15" rx="1.6" transform="rotate(-8 8.5 12.5)"/><rect x="9.5" y="3.5" width="11" height="15" rx="1.6" fill="rgba(6,18,34,.85)" transform="rotate(7 15 11)"/><path d="M13.6 8.6l1.2 2.3 2.5.3-1.8 1.7.4 2.5-2.3-1.2-2.2 1.2.4-2.5-1.8-1.7 2.5-.3z" fill="currentColor" stroke="none" transform="rotate(7 15 11)"/></svg>`,
+  captain: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 10H5z" fill="rgba(232,202,133,.15)"/><path d="M5 21h14"/><circle cx="12" cy="5" r="1.2" fill="currentColor"/><circle cx="3" cy="8" r="1" fill="currentColor"/><circle cx="21" cy="8" r="1" fill="currentColor"/></svg>`,
+  map: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/><path d="M5.5 10.5l2 1.5M11 13.5l2-2" stroke-dasharray="1.5 1.5"/></svg>`,
+  museum: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg>`,
+  diary: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5z"/><path d="M12 6v14"/><path d="M19 2.5l-3 6" stroke-width="1.4"/></svg>`,
   grid: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><rect x="3" y="15" width="7" height="6" rx="1.5"/><rect x="14" y="15" width="7" height="6" rx="1.5"/></svg>`,
   scan: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg>`,
   user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>`,
@@ -146,6 +152,22 @@ const EMBLEM = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400"
     <rect x="-52" y="-12" width="16" height="28" rx="6" fill="url(#gd)"/><rect x="36" y="-12" width="16" height="28" rx="6" fill="url(#gd)"/>
     <path d="M-44 14c0 18 12 26 26 26" fill="none" stroke="url(#gd)" stroke-width="4"/><circle cx="-16" cy="40" r="5" fill="url(#gd)"/>
   </g></svg>`;
+
+// ---------- recursos gráficos ----------
+// Rutas de los gráficos de la app. Los definitivos generados con ChatGPT se colocan en assets/ con estos nombres.
+const ASSETS = {
+  intro: '/assets/cinematicas/intro.webp',
+  mapa: '/assets/mapa/mapa.webp',
+  barcoInicio: '/assets/fondos/barco-inicio.webp',
+};
+const ISLAS = [
+  { n: 1, nombre: 'Isla del Origen', x: .19, y: .20 }, { n: 2, nombre: 'Isla del Volcán', x: .49, y: .17 },
+  { n: 3, nombre: 'Isla Celestial', x: .83, y: .18 }, { n: 4, nombre: 'Isla de los Samuráis', x: .50, y: .30 },
+  { n: 5, nombre: 'Isla Helada', x: .82, y: .33 }, { n: 6, nombre: 'Isla Pirata', x: .19, y: .33 },
+  { n: 7, nombre: 'Isla del Desierto', x: .22, y: .49 }, { n: 8, nombre: 'Isla Marina', x: .23, y: .63 },
+  { n: 9, nombre: 'Isla Selvática', x: .76, y: .48 }, { n: 10, nombre: 'Isla Fantasma', x: .76, y: .63 },
+  { n: 11, nombre: 'Isla Industrial', x: .25, y: .78 }, { n: 12, nombre: 'Isla del Tesoro', x: .72, y: .79 },
+];
 
 // ---------- rarezas -> animación ----------
 const TIERS = {
@@ -194,14 +216,15 @@ function backHTML() {
 // ---------- vistas ----------
 function shell(active, inner) {
   root.innerHTML = `<div class="app">
-    <div class="top"><div class="brand"><span class="gold-text">SAM PIECE</span><small>3D</small></div>
+    <div class="top"><a class="brand" href="#inicio"><span class="gold-text">SAM PIECE</span><small>3D</small><em>EDICIÓN PRIVADA · 001/001</em></a>
       <div class="top-r"><a class="icon-btn" href="#rocola" aria-label="Rocola">${ICON.music}</a><button class="icon-btn" id="snd" aria-label="Sonido">${isSoundOn() ? ICON.soundOn : ICON.soundOff}</button><div class="pill" id="cnt">${count()}/${S.cards.length}</div></div></div>
     <div id="view" class="fade-in">${inner}</div></div>
     <nav class="nav"><div class="nav-in">
-      <a href="#coleccion" class="${active === 'coleccion' ? 'on' : ''}">${ICON.grid}Colección</a>
-      <a href="#escaner" class="${active === 'escaner' ? 'on' : ''}">${ICON.scan}Escanear</a>
-      <a href="#tripulacion" class="${active === 'tripulacion' ? 'on' : ''}">${ICON.crew}Tripulación</a>
-      <a href="#perfil" class="${active === 'perfil' ? 'on' : ''}">${ICON.user}Perfil</a>
+      <a href="#inicio" class="${active === 'inicio' ? 'on' : ''}">${ICON.home}<span>Inicio</span></a>
+      <a href="#coleccion" class="${active === 'coleccion' ? 'on' : ''}">${ICON.album}<span>Álbum</span></a>
+      <a href="#escaner" class="scan-tab ${active === 'escaner' ? 'on' : ''}"><i>${ICON.scan}</i><span>Escanear</span></a>
+      <a href="#tripulacion" class="${active === 'tripulacion' ? 'on' : ''}">${ICON.crew}<span>Tripulación</span></a>
+      <a href="#perfil" class="${active === 'perfil' ? 'on' : ''}">${ICON.captain}<span>Capitán</span></a>
     </div></nav>`;
   $('#snd').onclick = () => { setSound(!isSoundOn()); $('#snd').innerHTML = isSoundOn() ? ICON.soundOn : ICON.soundOff; sfx('tap'); haptic(); };
 }
@@ -270,7 +293,7 @@ function viewColeccion() {
     ${installBanner()}
     <div class="h"><h1 class="gold-text">Colección</h1><span class="sub">Doce sobres · ${total} cartas</span></div>
     <div class="progress"><div class="num gold-text">${n}<small>/${total}</small></div><div class="bar"><i style="width:${total ? (n / total * 100) : 0}%"></i></div></div>
-    ${mapHTML()}
+    <a class="map-link" href="#mapa">${ICON.map}<span>Ver el Gran Mapa</span></a>
     ${sobreFiltro || personaFiltro ? `<div class="filter-note"><span>${personaFiltro ? esc(personaFiltro) : 'Sobre ' + sobreFiltro} · ${visibles.length} carta${visibles.length === 1 ? '' : 's'}</span><button class="btn ghost small" id="clearf">Ver todas</button></div>` : ''}
     ${S.storageOK ? '' : '<p><span class="tag bad">Sin guardado</span> Este navegador no permite guardar la colección (¿modo privado?).</p>'}
     <div class="grid">${visibles.map(c => cardHTML(c, { isNew: S.lastNew === c.num })).join('')}</div>`);
@@ -434,6 +457,103 @@ function viewRocola() {
   bindSongs();
   // carga el reproductor solo al abrir cada canción
   document.querySelectorAll('details.track').forEach(d => d.addEventListener('toggle', () => { if (d.open) { sfx('tap'); const m = $('.spot-mount', d); if (m && !m.dataset.on) { m.dataset.on = 1; mountSpotify(m, true); } } }));
+}
+
+// ---------- inicio ----------
+function islaEstado(n) {
+  const st = islandState(n);
+  if (st.done) return 'conquistada';
+  if (st.started || n === 1) return 'descubierta';
+  return 'bloqueada';
+}
+function viewInicio() {
+  const n = count(), total = S.cards.length, ti = titulo(n);
+  const pct = total ? (n / total * 100) : 0;
+  const ultima = S.cards.filter(c => S.unlocked[c.num]).sort((a, b) => S.unlocked[b.num].t.localeCompare(S.unlocked[a.num].t))[0];
+  const exploradas = ISLAS.filter(i => islaEstado(i.n) !== 'bloqueada').length;
+  shell('inicio', `
+    ${installBanner()}
+    <p class="greet">${n ? 'La aventura continúa, Samuel' : 'Tu aventura comienza, Samuel'}</p>
+    <div class="ornate home-progress">
+      <div class="hp-main"><span class="hp-k">Progreso de la colección</span>
+        <div class="hp-num"><b class="gold-text">${n}</b><small>/ ${total}</small><em>${pct.toFixed(1).replace('.', ',')}%</em></div>
+        <div class="bar"><i style="width:${pct}%"></i></div></div>
+      <a class="rank" href="#perfil"><div class="rank-medal">${MEDAL_ICO.anchor}</div><span>${esc(ti.t)}</span></a>
+    </div>
+    <a class="ornate ship-card" href="#mapa">
+      <img src="${ASSETS.barcoInicio}" alt="" decoding="async">
+      <div class="ship-info"><span>${exploradas}/12 islas exploradas</span><b class="btn">Explorar el mapa</b></div>
+    </a>
+    <div class="quick">
+      <a href="#coleccion" class="q"><i>${ICON.album}</i><span>Mi colección</span></a>
+      <a href="#museo" class="q"><i>${ICON.museum}</i><span>Museo 3D</span></a>
+      <a href="#tripulacion" class="q"><i>${ICON.crew}</i><span>Tripulación</span></a>
+      <a href="#diario" class="q"><i>${ICON.diary}</i><span>Diario</span></a>
+    </div>
+    ${ultima ? `<a class="ornate last-card" href="#carta-${ultima.num}"><div class="lc-img">${cardHTML(ultima, { link: false })}</div>
+      <div><span class="hp-k">Última carta conseguida</span><b>${esc(ultima.nombre || 'Carta ' + ultima.num)}</b><small>${esc(rarezaNombre(ultima) || 'Nº ' + ultima.num)} · Nº ${ultima.num}</small></div></a>` : ''}`);
+  const nb = $('#nob'); if (nb) nb.onclick = () => { try { sessionStorage.setItem('sp-nobanner', '1'); } catch { } $('#banner').remove(); };
+}
+
+// ---------- el gran mapa ----------
+function viewMapa() {
+  const estados = ISLAS.map(i => islaEstado(i.n));
+  const actual = ISLAS[Math.max(0, estados.findIndex(e => e !== 'conquistada'))] || ISLAS[11];
+  const exploradas = estados.filter(e => e !== 'bloqueada').length;
+  shell('inicio', `
+    <div class="h"><h1 class="gold-text">El Gran Mapa</h1><a class="btn ghost small" href="#inicio">Volver</a></div>
+    <p class="map-sub">12 islas · ${S.cards.length} cartas · un tesoro</p>
+    <div class="bigmap ornate"><div class="bm-in">
+      <img src="${ASSETS.mapa}" alt="Mapa de las 12 islas" decoding="async">
+      ${ISLAS.map((i, k) => `<button class="isle ${estados[k]}" data-n="${i.n}" style="left:${i.x * 100}%;top:${i.y * 100}%" aria-label="${esc(i.nombre)}">
+        <span class="fogc"></span>${estados[k] === 'conquistada' ? `<span class="flag">${MEDAL_ICO.crown}</span>` : ''}<span class="iname">${esc(i.nombre)}</span></button>`).join('')}
+      <div class="ship-pin" style="left:${actual.x * 100}%;top:${actual.y * 100}%"><svg viewBox="0 0 48 40"><path d="M4 26h40l-6 10H10z" fill="#6b4a1c" stroke="#E8CA85" stroke-width="1.5"/><path d="M23 4v22" stroke="#E8CA85" stroke-width="2"/><path d="M24 6c10 3 14 9 12 17H24z" fill="#f4f2ec"/><path d="M22 8c-8 3-11 8-10 14h10z" fill="#E8D5AF"/><path d="M23 4h9l-2 3 2 3h-9z" fill="#061222"/></svg></div>
+    </div></div>
+    <div class="ornate isles-count"><span>Islas exploradas</span><b class="gold-text">${exploradas} / 12</b></div>`);
+  $('.bigmap').addEventListener('click', e => { const b = e.target.closest('.isle'); if (b) { sfx('tap'); haptic(); showIsla(+b.dataset.n); } });
+}
+function showIsla(n) {
+  const i = ISLAS[n - 1], st = islandState(n), est = islaEstado(n);
+  const cards = S.cards.filter(c => c.sobre === n);
+  const d = document.createElement('div'); d.className = 'sheet-wrap';
+  d.innerHTML = `<div class="sheet ornate"><div class="sheet-grip"></div>
+    <span class="hp-k">Sobre ${n}</span><h3 class="gold-text">${esc(i.nombre)}</h3>
+    <p class="st-${est}">${est === 'conquistada' ? 'Conquistada: tienes todas sus cartas' : est === 'descubierta' ? (st.total ? `Descubierta · ${st.got}/${st.total} cartas` : 'Descubierta') : 'Cubierta por la niebla: abre su sobre para descubrirla'}</p>
+    ${cards.length ? `<div class="sheet-cards">${cards.map(c => cardHTML(c)).join('')}</div>` : '<p class="muted">Las cartas de este sobre aún no están asignadas.</p>'}
+    <button class="btn ghost small" data-x>Cerrar</button></div>`;
+  document.body.appendChild(d);
+  requestAnimationFrame(() => d.classList.add('in'));
+  const close = () => { d.classList.remove('in'); setTimeout(() => d.remove(), 300); };
+  d.addEventListener('click', e => { if (e.target === d || e.target.closest('[data-x]') || e.target.closest('.card')) close(); });
+}
+
+// ---------- museo 3D (preparado) ----------
+function viewMuseo() {
+  const conFigura = S.cards.filter(c => S.unlocked[c.num] && c.modelos?.length);
+  shell('inicio', `
+    <div class="h"><h1 class="gold-text">Museo 3D</h1><a class="btn ghost small" href="#inicio">Volver</a></div>
+    <div class="museum ornate">
+      <div class="m-cols"><i></i><i></i></div>
+      <div class="m-ped"><div class="m-top"></div><div class="m-base"></div></div>
+      <div class="m-text">${conFigura.length ? `${conFigura.length} figura${conFigura.length === 1 ? '' : 's'} en exposición` : 'La sala está preparada. Las figuras llegarán aquí cuando sus cartas tengan modelo 3D.'}</div>
+    </div>
+    ${conFigura.length ? `<div class="m-pick">${conFigura.map(c => `<a href="#figura-${c.num}" class="m-thumb">${cardHTML(c, { link: false })}</a>`).join('')}</div>` : ''}`);
+}
+
+// ---------- diario de recuerdos (preparado) ----------
+function viewDiario() {
+  const R = S.recuerdos || [];
+  shell('inicio', `
+    <div class="h"><h1 class="gold-text">Diario</h1><a class="btn ghost small" href="#inicio">Volver</a></div>
+    <div class="diary">
+      <div class="d-cover"><span>Diario de la</span><b>Tripulación</b></div>
+      ${R.length ? R.map(r => `<article class="d-page">
+        ${r.foto ? `<img src="/${esc(r.foto)}" alt="" loading="lazy">` : ''}
+        <h3>${esc(r.titulo || '')}</h3>${r.fecha ? `<small>${esc(r.fecha)}</small>` : ''}<p>${esc(r.texto || '')}</p>
+        ${r.audio ? `<button class="btn ghost small" data-audio="${esc(r.audio)}">Escuchar</button>` : ''}</article>`).join('')
+      : `<article class="d-page"><h3>Primeras páginas en blanco</h3><p>Aquí irán vuestras anécdotas, fotos, dedicatorias y mensajes de voz. Cada recuerdo será una página de este diario.</p></article>`}
+    </div>`);
+  document.querySelectorAll('[data-audio]').forEach(b => b.onclick = () => { try { new Audio('/' + b.dataset.audio).play(); } catch { } });
 }
 
 // ---------- ampliar con zoom ----------
@@ -1041,22 +1161,55 @@ async function viewDiagnostico() {
   add('info', 'Carga inicial', `${Math.round(performance.now() - T0)} ms`);
 }
 
-// ---------- splash ----------
+// ---------- intro cinematográfica ----------
 function splash() {
-  const s = document.createElement('div'); s.className = 'splash';
-  s.innerHTML = `<canvas class="flag"></canvas>
-    <div class="cmp"><div class="ring">${ICON.compass.replace('class="compass"', 'style="width:100%;height:100%"').replace(/<path d="M50 6[^>]*>/, '')}</div>
-      <div class="needle"><svg viewBox="0 0 100 100" style="width:100%;height:100%"><path d="M50 8 L57 50 L50 56 L43 50Z" fill="#f7d98b"/><path d="M50 92 L56 50 L50 44 L44 50Z" fill="#a8781f"/><circle cx="50" cy="50" r="4" fill="#060a18" stroke="#f7d98b" stroke-width="2"/></svg></div></div>
-    <div class="logo emboss"><span class="gold-text sheen">SAM<br>PIECE</span><span class="sub gold-text">3D</span></div>
-    <p class="tag">La colección privada de Samuel</p>
-    <div class="cta">TOCA PARA ZARPAR</div><div class="flash"></div>`;
+  const s = document.createElement('div'); s.className = 'intro';
+  s.innerHTML = `<div class="intro-art"><img src="${ASSETS.intro}" alt="" decoding="async">
+      <span class="lantern"></span><span class="moonglow"></span><span class="seashine"></span><canvas class="sparks"></canvas></div>
+    <div class="intro-ui">
+      <button class="btn intro-go">Comenzar mi aventura</button>
+      <div class="intro-row"><button class="intro-sea" aria-label="Sonido del mar">${ICON.soundOff}<span>Sonido del mar</span></button>
+        <label class="intro-skip"><input type="checkbox" id="noint"> No mostrar la intro al abrir</label></div>
+    </div><div class="flash"></div>`;
   document.body.appendChild(s);
-  const stopFlag = waveFlag($('canvas.flag', s), EMBLEM);
-  s.addEventListener('click', () => {
+  pauseBackground(true);
+  // destellos de estrellas sobre la ilustración
+  const cv = $('canvas.sparks', s), ctx = cv.getContext('2d'); const dpr = Math.min(devicePixelRatio || 1, 2);
+  const art = $('.intro-art', s); let raf, stars = [];
+  const size = () => { cv.width = art.clientWidth * dpr; cv.height = art.clientHeight * dpr; stars = Array.from({ length: 40 }, () => ({ x: Math.random(), y: Math.random() * .45, p: Math.random() * 6.28, s: .6 + Math.random() * 1.6 })); };
+  const loop = t => { ctx.clearRect(0, 0, cv.width, cv.height);
+    for (const st of stars) { const a = Math.max(0, Math.sin(t / 900 * st.s + st.p)); if (a < .2) continue; ctx.globalAlpha = a * .9; ctx.fillStyle = '#fff6dc';
+      const x = st.x * cv.width, y = st.y * cv.height, r = (1 + a * 1.5) * dpr; ctx.beginPath(); ctx.moveTo(x, y - r * 2); ctx.lineTo(x + r * .4, y); ctx.lineTo(x, y + r * 2); ctx.lineTo(x - r * .4, y); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(x - r * 2, y); ctx.lineTo(x, y + r * .4); ctx.lineTo(x + r * 2, y); ctx.lineTo(x, y - r * .4); ctx.fill(); }
+    ctx.globalAlpha = 1; raf = requestAnimationFrame(loop); };
+  $('img', s).addEventListener('load', size); size(); raf = requestAnimationFrame(loop);
+  // sonido del mar (opcional)
+  let sea = null;
+  $('.intro-sea', s).onclick = e => { e.stopPropagation(); unlockAudio();
+    if (sea) { sea.stop(); sea = null; $('.intro-sea', s).innerHTML = ICON.soundOff + '<span>Sonido del mar</span>'; }
+    else { sea = seaSound(); $('.intro-sea', s).innerHTML = ICON.soundOn + '<span>Sonido del mar</span>'; } };
+  $('.intro-go', s).onclick = () => {
     unlockAudio(); requestGyro(); sfx('whoosh'); haptic('medium');
-    s.classList.add('out'); try { sessionStorage.setItem('sp-splash', '1'); } catch { }
-    setTimeout(() => { stopFlag(); s.remove(); }, 900);
-  }, { once: true });
+    try { if ($('#noint', s).checked) localStorage.setItem('sp-nointro', '1'); sessionStorage.setItem('sp-splash', '1'); } catch { }
+    s.classList.add('out'); sea?.fade();
+    setTimeout(() => { cancelAnimationFrame(raf); s.remove(); pauseBackground(false); }, 1000);
+  };
+}
+// olas sintetizadas: ruido filtrado que sube y baja
+function seaSound() {
+  try {
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    const len = ac.sampleRate * 4, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+    let last = 0; for (let i = 0; i < len; i++) { const w = Math.random() * 2 - 1; last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
+    const src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+    const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900;
+    const g = ac.createGain(); g.gain.value = 0.0;
+    const lfo = ac.createOscillator(); lfo.frequency.value = 0.12; const lg = ac.createGain(); lg.gain.value = 0.22;
+    lfo.connect(lg); lg.connect(g.gain); src.connect(f); f.connect(g); g.connect(ac.destination);
+    g.gain.setValueAtTime(0, ac.currentTime); g.gain.linearRampToValueAtTime(0.3, ac.currentTime + 1.5);
+    src.start(); lfo.start();
+    return { stop: () => { try { ac.close(); } catch { } }, fade: () => { try { g.gain.linearRampToValueAtTime(0, ac.currentTime + 0.9); setTimeout(() => ac.close(), 1000); } catch { } } };
+  } catch { return null; }
 }
 
 // ---------- router ----------
@@ -1081,10 +1234,14 @@ function route() {
   else if (h === 'perfil') viewPerfil();
   else if (h === 'tripulacion') viewTripulacion();
   else if (h === 'rocola') viewRocola();
+  else if (h === 'coleccion') viewColeccion();
+  else if (h === 'mapa') viewMapa();
+  else if (h === 'museo') viewMuseo();
+  else if (h === 'diario') viewDiario();
   else if (h === 'pruebas') viewPruebas();
   else if (h === 'muestrario') viewMuestrario();
   else if (h === 'diagnostico') viewDiagnostico();
-  else viewColeccion();
+  else viewInicio();
   scrollTo(0, 0);
 }
 addEventListener('hashchange', route);
@@ -1097,12 +1254,13 @@ async function boot() {
   try {
     const r = await fetch('/cards.json'); const data = await r.json();
     S.cards = data.cartas; S.cards.forEach(c => S.byNum.set(c.num, c));
-    S.crew = data.tripulacion || []; S.mensajeFinal = data.mensajeFinal || null;
+    S.crew = data.tripulacion || []; S.mensajeFinal = data.mensajeFinal || null; S.recuerdos = data.recuerdos || [];
   } catch { root.innerHTML = `<div class="app"><div class="panel"><h2>Error</h2><p>No se pudo cargar la colección. Comprueba la conexión y vuelve a abrir la app.</p></div></div>`; return; }
   startBackground(document.getElementById('bg'));
   loadProgress(); askPersist(); checkLogros(true);
   let seen = false; try { seen = !!sessionStorage.getItem('sp-splash'); } catch { }
-  if (!location.hash && !seen) splash();
+  let noIntro = false; try { noIntro = !!localStorage.getItem('sp-nointro'); } catch { }
+  if (!location.hash && !seen && !noIntro) splash();
   route();
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => { });
 }

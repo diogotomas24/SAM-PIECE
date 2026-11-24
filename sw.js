@@ -1,6 +1,6 @@
 // Service worker de SAM PIECE 3D: app disponible sin conexión.
 // Al cambiar archivos de la app, sube CACHE para que los móviles descarguen la versión nueva.
-const CACHE = 'sampiece-0.4.2';
+const CACHE = 'sampiece-0.5.0';
 const SHELL = ['/', '/index.html', '/app.js', '/fx.js', '/style.css', '/cards.json', '/manifest.webmanifest',
   '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'];
 
@@ -17,7 +17,7 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   const cdn = url.hostname === 'cdn.jsdelivr.net';
   if (url.origin === location.origin && url.pathname.startsWith('/audio/')) return; // audio: directo (admite saltos en la canción)
-  const model = url.origin === location.origin && (url.pathname.startsWith('/models/') || url.pathname.startsWith('/images/'));
+  const model = url.origin === location.origin && (url.pathname.startsWith('/models/') || url.pathname.startsWith('/images/') || url.pathname.startsWith('/assets/'));
   if (cdn || model) {
     // versionados o pesados: primero caché (los modelos se guardan al abrirlos por primera vez)
     e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(res => {
