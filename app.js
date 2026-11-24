@@ -4,7 +4,7 @@
 
 import { startBackground, pauseBackground, requestGyro, unlockAudio, sfx, haptic, isSoundOn, setSound, waveFlag } from './fx.js';
 
-const VERSION = '0.5.0';
+const VERSION = '0.5.1';
 const KEY = 'sampiece.v1';
 const $ = (s, el = document) => el.querySelector(s);
 const root = document.getElementById('root');
@@ -159,6 +159,9 @@ const ASSETS = {
   intro: '/assets/cinematicas/intro.webp',
   mapa: '/assets/mapa/mapa.webp',
   barcoInicio: '/assets/fondos/barco-inicio.webp',
+  reverso: '/assets/marcos/reverso.webp',
+  reversoMini: '/assets/marcos/reverso-mini.webp',
+  emblema: '/assets/iconos/emblema.webp',
 };
 const ISLAS = [
   { n: 1, nombre: 'Isla del Origen', x: .19, y: .20 }, { n: 2, nombre: 'Isla del Volcán', x: .49, y: .17 },
@@ -190,8 +193,9 @@ function cardHTML(card, { link = true, forceFront = false, isNew = false } = {})
   const open = forceFront || !!S.unlocked[card.num];
   const tag = link ? 'a' : 'div';
   const href = link ? ` href="#carta-${card.num}"` : '';
-  if (!open) return `<${tag} class="card locked"${href} aria-label="Carta ${card.num} bloqueada"><div class="face back">
-    <div class="num">Nº ${card.num}</div><div class="sil">${ICON.shadow}</div><div class="fog"></div><div class="lock">${ICON.lock}</div></div></${tag}>`;
+  if (!open) return `<${tag} class="card locked"${href} aria-label="Carta ${card.num} bloqueada"><div class="face rev dim">
+    <img src="${link ? ASSETS.reversoMini : ASSETS.reverso}" alt="" decoding="async" draggable="false">
+    <span class="rnum">Nº ${card.num}</span><span class="rlock">${ICON.lock}</span></div></${tag}>`;
   const name = card.nombre || `Carta ${card.num}`;
   const rc = rarityClass(card);
   if (card.imagen) { // carta con ilustración propia: la imagen es la carta entera
@@ -207,16 +211,20 @@ function cardHTML(card, { link = true, forceFront = false, isNew = false } = {})
     <div class="holo"></div><div class="glare"></div><div class="edge"></div>${rc === 'r-samuel' ? SAM_STARS : ''}</div></${tag}>`;
 }
 function ribbon(card, link) { const u = S.unlocked[card.num]; return link && u && !u.v ? '<div class="ribbon">NUEVA</div>' : ''; }
+function flipInNew() {
+  const el = document.querySelector('.grid .card.new'); if (!el) return;
+  const cover = document.createElement('div'); cover.className = 'flipcover';
+  cover.innerHTML = `<img src="${ASSETS.reversoMini}" alt="">`; el.appendChild(cover);
+  el.addEventListener('animationend', () => { cover.remove(); el.classList.remove('new'); }, { once: true });
+}
 function backHTML() {
-  return `<div class="card"><div class="face back" style="display:grid;place-items:center">
-    <div style="text-align:center"><div class="gold-text" style="font-family:var(--title);font-weight:900;font-size:clamp(20px,6vw,30px);letter-spacing:.08em">SAM<br>PIECE</div>
-    <div style="width:46%;margin:10px auto 0">${ICON.compass.replace('class="compass"', '')}</div></div></div></div>`;
+  return `<div class="card"><div class="face rev"><img src="${ASSETS.reverso}" alt="" draggable="false"></div></div>`;
 }
 
 // ---------- vistas ----------
 function shell(active, inner) {
   root.innerHTML = `<div class="app">
-    <div class="top"><a class="brand" href="#inicio"><span class="gold-text">SAM PIECE</span><small>3D</small><em>EDICIÓN PRIVADA · 001/001</em></a>
+    <div class="top"><a class="brand" href="#inicio"><img class="brand-em" src="${ASSETS.emblema}" alt=""><span class="bt"><span class="bl"><span class="gold-text">SAM PIECE</span><small>3D</small></span><em>EDICIÓN PRIVADA · 001/001</em></span></a>
       <div class="top-r"><a class="icon-btn" href="#rocola" aria-label="Rocola">${ICON.music}</a><button class="icon-btn" id="snd" aria-label="Sonido">${isSoundOn() ? ICON.soundOn : ICON.soundOff}</button><div class="pill" id="cnt">${count()}/${S.cards.length}</div></div></div>
     <div id="view" class="fade-in">${inner}</div></div>
     <nav class="nav"><div class="nav-in">
@@ -297,6 +305,7 @@ function viewColeccion() {
     ${sobreFiltro || personaFiltro ? `<div class="filter-note"><span>${personaFiltro ? esc(personaFiltro) : 'Sobre ' + sobreFiltro} · ${visibles.length} carta${visibles.length === 1 ? '' : 's'}</span><button class="btn ghost small" id="clearf">Ver todas</button></div>` : ''}
     ${S.storageOK ? '' : '<p><span class="tag bad">Sin guardado</span> Este navegador no permite guardar la colección (¿modo privado?).</p>'}
     <div class="grid">${visibles.map(c => cardHTML(c, { isNew: S.lastNew === c.num })).join('')}</div>`);
+  flipInNew();
   const nb = $('#nob'); if (nb) nb.onclick = () => { try { sessionStorage.setItem('sp-nobanner', '1'); } catch { } $('#banner').remove(); };
   $('#clearf')?.addEventListener('click', () => { sobreFiltro = null; personaFiltro = null; sfx('tap'); viewColeccion(); });
   const map = $('#map');
@@ -662,7 +671,7 @@ function viewPerfil() {
   const bit = S.cards.filter(c => S.unlocked[c.num]).sort((a, b) => S.unlocked[b.num].t.localeCompare(S.unlocked[a.num].t));
   shell('perfil', `
     <div class="captain">
-      <div class="cap-flag">${EMBLEM.replace('width="600" height="400"', 'width="100%"')}</div>
+      <div class="cap-emblem"><img src="${ASSETS.emblema}" alt="Emblema SAM PIECE"></div>
       <div class="cap-k">CAPITÁN SAMUEL</div>
       <div class="cap-t gold-text emboss">${esc(ti.t)}</div>
       <div class="cap-stats"><div><b class="gold-text">${n}</b><span>Cartas</span></div><div><b class="gold-text">${sobres}</b><span>Sobres</span></div><div><b class="gold-text">${logrosHechos}</b><span>Logros</span></div></div>

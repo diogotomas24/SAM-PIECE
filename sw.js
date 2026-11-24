@@ -1,6 +1,6 @@
 // Service worker de SAM PIECE 3D: app disponible sin conexión.
 // Al cambiar archivos de la app, sube CACHE para que los móviles descarguen la versión nueva.
-const CACHE = 'sampiece-0.5.0';
+const CACHE = 'sampiece-0.5.1';
 const SHELL = ['/', '/index.html', '/app.js', '/fx.js', '/style.css', '/cards.json', '/manifest.webmanifest',
   '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'];
 
