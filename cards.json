@@ -48,8 +48,10 @@
   {
    "id": 2,
    "num": "002",
-   "nombre": null,
-   "personajes": [],
+   "nombre": "Diogo",
+   "personajes": [
+    "Diogo"
+   ],
    "rareza": "L",
    "sobre": null,
    "recompensa": null,
