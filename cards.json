@@ -352,50 +352,59 @@
   {
    "id": 18,
    "num": "018",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Edu",
+   "personajes": [
+    "Edu"
+   ],
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/018.webp",
    "modelos": [],
    "h": "8cf0b813287f08a550cfec6cba4f4c7c31c29946d551c60c8b37076af4f877cc",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/018-mini.webp"
   },
   {
    "id": 19,
    "num": "019",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Edu",
+   "personajes": [
+    "Edu"
+   ],
+   "rareza": "SEC",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/019.webp",
    "modelos": [],
    "h": "4bff5f435ac947523a6a0ee6eb35cd18b295b05c63bf3117b97063275ea5714d",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/019-mini.webp"
   },
   {
    "id": 20,
    "num": "020",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Edu",
+   "personajes": [
+    "Edu"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/020.webp",
    "modelos": [],
    "h": "dbb1bea01b61da5f3b4b4868b8e7a04ddaae335eaed36db3cf3fb3d3d2c70b97",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/020-mini.webp"
   },
   {
    "id": 21,
