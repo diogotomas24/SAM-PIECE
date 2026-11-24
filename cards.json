@@ -504,50 +504,59 @@
   {
    "id": 26,
    "num": "026",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Sandra",
+   "personajes": [
+    "Sandra"
+   ],
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/026.webp",
    "modelos": [],
    "h": "bb854a71978329e578256bad8bb84dbed832ed0802a10b24f0a364271cf71c70",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/026-mini.webp"
   },
   {
    "id": 27,
    "num": "027",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Sandra",
+   "personajes": [
+    "Sandra"
+   ],
+   "rareza": "SP",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/027.webp",
    "modelos": [],
    "h": "31a8ee26a199103921714a9a27377e0dcf1248f3426d62715ea079305f0ec2a1",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/027-mini.webp"
   },
   {
    "id": 28,
    "num": "028",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Sandra",
+   "personajes": [
+    "Sandra"
+   ],
+   "rareza": "SP",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/028.webp",
    "modelos": [],
    "h": "185f40093ba8a6a141c37a4221a9794b3f1d2cb8718626a6b0764b6674aebc43",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/028-mini.webp"
   },
   {
    "id": 29,
