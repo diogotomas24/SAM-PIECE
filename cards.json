@@ -65,34 +65,40 @@
   {
    "id": 3,
    "num": "003",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Lara",
+   "personajes": [
+    "Lara"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/003.webp",
    "modelos": [],
    "h": "411d3725d58f37e845ad53c68d73b32b249dabd9fa0477bdfe20b9e918bb40a4",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/003-mini.webp"
   },
   {
    "id": 4,
    "num": "004",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Lara",
+   "personajes": [
+    "Lara"
+   ],
+   "rareza": "SR",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/004.webp",
    "modelos": [],
    "h": "fd3e9dc186c22062b1da8c6d48ab0100147e6cca611b42b88569f1897afffbb7",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/004-mini.webp"
   },
   {
    "id": 5,
