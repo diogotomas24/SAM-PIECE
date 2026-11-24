@@ -618,34 +618,40 @@
   {
    "id": 32,
    "num": "032",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Álvaro Ibáñez",
+   "personajes": [
+    "Álvaro Ibáñez"
+   ],
+   "rareza": "L",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/032.webp",
    "modelos": [],
    "h": "e27eb6a4bb7fbb276ebb34566fc8a6cab811a003db77ba523e19c21e35f33fac",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/032-mini.webp"
   },
   {
    "id": 33,
    "num": "033",
-   "nombre": null,
-   "personajes": [],
-   "rareza": null,
+   "nombre": "Álvaro Ibáñez",
+   "personajes": [
+    "Álvaro Ibáñez"
+   ],
+   "rareza": "SEC",
    "sobre": null,
    "recompensa": null,
    "frase": null,
-   "imagen": null,
+   "imagen": "images/cartas/033.webp",
    "modelos": [],
    "h": "5920f362d3bf47ec3ec3e5cb782399d40585c61c7470e0a58c220fb82849acfa",
    "dedicatoria": null,
    "audio": null,
-   "cancion": null
+   "cancion": null,
+   "miniatura": "images/cartas/033-mini.webp"
   },
   {
    "id": 34,
