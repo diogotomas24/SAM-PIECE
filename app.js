@@ -4,7 +4,7 @@
 
 import { startBackground, pauseBackground, requestGyro, unlockAudio, sfx, haptic, isSoundOn, setSound, waveFlag } from './fx.js';
 
-const VERSION = '0.5.1';
+const VERSION = '0.6.0';
 const KEY = 'sampiece.v1';
 const $ = (s, el = document) => el.querySelector(s);
 const root = document.getElementById('root');
@@ -20,6 +20,7 @@ const diag = {};
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const count = () => Object.keys(S.unlocked).length;
+const totalTxt = () => String(S.cards.length || 54).padStart(3, '0');
 function toast(text, ms = 2600) {
   const t = document.createElement('div'); t.className = 'toast'; t.textContent = text;
   document.body.appendChild(t); setTimeout(() => t.remove(), ms);
@@ -52,7 +53,7 @@ async function askPersist() {
   try { if (navigator.storage?.persist) S.persisted = (await navigator.storage.persisted()) || (await navigator.storage.persist()); } catch { }
 }
 // Copia de seguridad: los propios códigos de las cartas (se validan al importar)
-const exportBackup = () => 'SAMPIECE1:' + Object.values(S.unlocked).map(u => u.c.slice(3)).sort().join('.');
+const exportBackup = () => 'SAMPIECE1:' + Object.values(S.unlocked).filter(u => !u.p).map(u => u.c.slice(3)).sort().join('.');
 async function importBackup(text) {
   const codes = (text.match(/[a-z0-9]{10}/gi) || []).map(c => 'sp-' + c.toLowerCase());
   let added = 0, bad = 0;
@@ -206,7 +207,7 @@ function cardHTML(card, { link = true, forceFront = false, isNew = false } = {})
   }
   return `<${tag} class="card open ${rc}${isNew ? ' new' : ''}"${href} aria-label="${esc(name)}">${ribbon(card, link)}<div class="face front">
     <div class="inner"><div class="art">${card.imagen ? `<img src="${esc(card.imagen)}" alt="">` : ICON.sil}</div>
-    <div class="meta"><b>${esc(name)}</b><span>Nº ${card.num}/054</span></div></div>
+    <div class="meta"><b>${esc(name)}</b><span>Nº ${card.num}/${totalTxt()}</span></div></div>
     ${card.rareza ? `<div class="badge">${esc(card.rareza)}</div>` : ''}
     <div class="holo"></div><div class="glare"></div><div class="edge"></div>${rc === 'r-samuel' ? SAM_STARS : ''}</div></${tag}>`;
 }
@@ -354,7 +355,7 @@ function viewFicha(num) {
           <div class="name">${esc(c.nombre || 'Carta ' + c.num)}</div>
           <div class="bounty"><span class="coin">S</span>${c.recompensa ? esc(Number(c.recompensa).toLocaleString('es-ES')) : '¿?.???.???'}</div>
           <dl><dt>Rareza</dt><dd>${esc(rarezaNombre(c) || 'Por definir')}</dd>
-          <dt>Número</dt><dd>${c.num}/054</dd>
+          <dt>Número</dt><dd>${c.num}/${totalTxt()}</dd>
           <dt>Personajes</dt><dd>${who.length ? esc(who.join(', ')) : 'Por definir'}</dd>
           <dt>Sobre</dt><dd>${c.sobre ? 'Sobre ' + c.sobre : 'Por definir'}</dd>
           <dt>Capturada</dt><dd>${esc(fecha)}</dd></dl>
@@ -646,6 +647,8 @@ function viewEscaner() {
   $('#codeform').addEventListener('submit', e => {
     e.preventDefault();
     let v = $('#code').value.trim().toLowerCase().replace(/\s+/g, '');
+    if (S.modoPruebas && /^0\d+$/.test(v)) { const c = S.byNum.get(String(parseInt(v, 10)).padStart(3, '0')); if (c) return unlockTest(c);
+      const m = $('#codemsg'); m.className = 'msg bad'; m.textContent = 'No existe esa carta.'; return; }
     if (!v.startsWith('sp-')) v = 'sp-' + v.replace(/^sp/, '');
     if (!/^sp-[a-z0-9]{10}$/.test(v)) { const m = $('#codemsg'); m.className = 'msg bad'; m.textContent = 'El código tiene 10 caracteres después de «sp-».'; return; }
     handleCode(v);
@@ -832,11 +835,14 @@ function viewPruebas() {
     <div class="panel"><h2>Rarezas</h2><p>Muestra de los cinco marcos de carta.</p><a class="btn ghost small" href="#muestrario">Ver muestrario</a></div>
     <div class="panel"><h2>3D</h2><div class="row"><a class="btn ghost small" href="#figura-prueba">Figura de prueba</a><a class="btn ghost small" href="#grupo">Escena grupal</a></div></div>
     <div class="panel"><h2>Diagnóstico</h2><a class="btn ghost small" href="#diagnostico">Abrir diagnóstico</a></div>
-    <div class="panel"><h2>Reiniciar</h2><p>Borra todas las cartas desbloqueadas de este teléfono.</p><button class="btn ghost small" id="treset">Reiniciar progreso</button></div>`);
+    <div class="panel"><h2>Reiniciar</h2><p>Las cartas abiertas con código de prueba (0 + número) se guardan aparte.</p>
+      <div class="row"><button class="btn ghost small" id="ttest">Borrar cartas de prueba</button><button class="btn ghost small" id="treset">Reiniciar todo</button></div></div>`);
   $('#tprev').onclick = () => {
     const tier = $('#ttier').value, rz = { comun: 'C', sr: 'SR', sec: 'SEC', manga: 'MR', samuel: 'SAM' }[tier];
     playUnlock({ ...S.byNum.get($('#tnum').value), rareza: rz }, tier, { preview: true });
   };
+  $('#ttest').onclick = () => { let n = 0; for (const k of Object.keys(S.unlocked)) if (S.unlocked[k].p) { delete S.unlocked[k]; n++; }
+    S.logros = {}; checkLogros(true); saveProgress(); toast(`${n} carta${n === 1 ? '' : 's'} de prueba borrada${n === 1 ? '' : 's'}`); };
   $('#tisla').onclick = () => showIsland(3);
   $('#ttes').onclick = () => showTreasure();
   $('#tlog').onclick = () => logroToast(LOGROS[0]);
@@ -861,6 +867,15 @@ async function handleCode(code) {
   await afterUnlock(card);
 }
 
+// Desbloqueo de prueba (código 0 + número): marcado aparte para poder borrarlo sin tocar el progreso real
+async function unlockTest(card) {
+  if (S.unlocked[card.num]) { toast('Ya tenías esta carta en tu colección'); return go('carta-' + card.num); }
+  S.unlocked[card.num] = { t: new Date().toISOString(), c: 'prueba', p: 1 };
+  saveProgress(); S.lastNew = card.num;
+  await playUnlock(card, tierOf(card));
+  await afterUnlock(card);
+}
+
 // ---------- animación de desbloqueo ----------
 const listJoin = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1];
 function playUnlock(card, tierKey, { preview = false } = {}) {
@@ -873,7 +888,7 @@ function playUnlock(card, tierKey, { preview = false } = {}) {
     const o = document.createElement('div'); o.className = 'unlock' + (T.manga ? ' manga' : '') + (T.gold ? ' gold' : '');
     o.innerHTML = `<canvas></canvas><div class="stage hover"><div class="flip">${backHTML()}${cardHTML(card, { link: false, forceFront: true }).replace('class="card', 'class="card f')}</div></div>
       <div class="hold"><div class="hold-bar"><i></i></div><span>Mantén pulsado para revelar</span></div>
-      <div class="label">${esc(preview ? T.label : (rarezaNombre(card) || T.label))}<small>Nº ${card.num}/054</small><em>${esc(line)}</em></div>
+      <div class="label">${esc(preview ? T.label : (rarezaNombre(card) || T.label))}<small>Nº ${card.num}/${totalTxt()}</small><em>${esc(line)}</em></div>
       <div class="actions">${preview ? '<button class="btn" data-a="close">Cerrar</button>' : `<button class="btn ghost" data-a="ficha">Ver ficha</button><button class="btn" data-a="col">Colección</button>`}</div>`;
     document.body.appendChild(o);
     const cv = $('canvas', o), ctx = cv.getContext('2d'), stage = $('.stage', o), barI = $('.hold-bar i', o);
@@ -1263,7 +1278,7 @@ async function boot() {
   try {
     const r = await fetch('/cards.json'); const data = await r.json();
     S.cards = data.cartas; S.cards.forEach(c => S.byNum.set(c.num, c));
-    S.crew = data.tripulacion || []; S.mensajeFinal = data.mensajeFinal || null; S.recuerdos = data.recuerdos || [];
+    S.modoPruebas = !!data.modoPruebas; S.crew = data.tripulacion || []; S.mensajeFinal = data.mensajeFinal || null; S.recuerdos = data.recuerdos || [];
   } catch { root.innerHTML = `<div class="app"><div class="panel"><h2>Error</h2><p>No se pudo cargar la colección. Comprueba la conexión y vuelve a abrir la app.</p></div></div>`; return; }
   startBackground(document.getElementById('bg'));
   loadProgress(); askPersist(); checkLogros(true);
