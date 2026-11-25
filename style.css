@@ -634,3 +634,14 @@ body{background:var(--navy-1)}
 .brand-em{flex:none;width:36px;height:36px;filter:drop-shadow(0 0 6px rgba(232,202,133,.35))}
 .cap-emblem{width:112px;margin:0 auto 8px}
 .cap-emblem img{display:block;width:100%;filter:drop-shadow(0 8px 18px rgba(0,0,0,.6)) drop-shadow(0 0 16px rgba(232,202,133,.3))}
+
+/* ---------- filtro por rareza ---------- */
+.chips{display:flex;gap:8px;overflow-x:auto;margin:-4px -14px 14px;padding:2px 14px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;font-size:14px;font-weight:600;letter-spacing:.04em;white-space:nowrap;
+  color:#e9dcbc;background:rgba(6,18,34,.75);box-shadow:0 0 0 1px rgba(232,202,133,.35) inset}
+.chip b{min-width:20px;padding:1px 6px;border-radius:9px;font-size:12px;text-align:center;color:#1a1204;background:var(--frame,var(--metal-gold))}
+.chip.r-sec b{color:#fff;text-shadow:0 1px 2px #000}
+.chip.r-manga b{color:#fff;background:#050505}
+.chip.on{color:#1a1204;background:var(--metal-gold);box-shadow:0 0 0 1px #f6e3b0 inset,0 0 14px rgba(232,202,133,.45)}
+.chip.on b{background:rgba(6,18,34,.85);color:var(--gold-2)}

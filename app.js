@@ -258,7 +258,10 @@ function islandPath(cx, cy, r, seed) {
   }
   return d + 'Z';
 }
-let sobreFiltro = null, personaFiltro = null;
+let sobreFiltro = null, personaFiltro = null, rarezaFiltro = null;
+// orden de los botones de rareza: de más a menos especial
+const RAREZA_ORDEN = ['SAM', 'L', 'SEC', 'SP', 'MR', 'SR', 'P', 'R', 'UC', 'C'];
+const RAREZA_CORTO = { SAM: 'Exclusiva', L: 'Leader', SEC: 'Secret Rare', SP: 'Especial', MR: 'Manga Rare', SR: 'Super Rare', P: 'Promo', R: 'Rara', UC: 'Infrecuente', C: 'Común' };
 function islandState(n) {
   const cards = S.cards.filter(c => c.sobre === n);
   const got = cards.filter(c => S.unlocked[c.num]).length;
@@ -297,16 +300,29 @@ function mapHTML() {
 }
 function viewColeccion() {
   const n = count(), total = S.cards.length;
-  const visibles = personaFiltro ? S.cards.filter(c => (c.personajes || []).includes(personaFiltro)) : sobreFiltro ? S.cards.filter(c => c.sobre === sobreFiltro) : S.cards;
+  let visibles = personaFiltro ? S.cards.filter(c => (c.personajes || []).includes(personaFiltro)) : sobreFiltro ? S.cards.filter(c => c.sobre === sobreFiltro) : S.cards;
+  // filtro de rareza: solo cartas conseguidas (las bloqueadas no revelan su rareza)
+  const mias = S.cards.filter(c => S.unlocked[c.num]);
+  const porRareza = {}; for (const c of mias) { const r = (c.rareza || '').toUpperCase(); if (r) porRareza[r] = (porRareza[r] || 0) + 1; }
+  if (rarezaFiltro && !porRareza[rarezaFiltro]) rarezaFiltro = null;
+  if (rarezaFiltro) visibles = visibles.filter(c => S.unlocked[c.num] && (c.rareza || '').toUpperCase() === rarezaFiltro);
+  const chips = RAREZA_ORDEN.filter(r => porRareza[r]);
   shell('coleccion', `
     ${installBanner()}
     <div class="h"><h1 class="gold-text">Colección</h1><span class="sub">Doce sobres · ${total} cartas</span></div>
     <div class="progress"><div class="num gold-text">${n}<small>/${total}</small></div><div class="bar"><i style="width:${total ? (n / total * 100) : 0}%"></i></div></div>
     <a class="map-link" href="#mapa">${ICON.map}<span>Ver el Gran Mapa</span></a>
+    ${chips.length ? `<div class="chips" id="chips"><button class="chip${rarezaFiltro ? '' : ' on'}" data-r="">Todas<b>${total}</b></button>${chips.map(r =>
+      `<button class="chip r-${(RAREZA_CLASE[r] || 'sr')}${rarezaFiltro === r ? ' on' : ''}" data-r="${r}">${RAREZA_CORTO[r] || r}<b>${porRareza[r]}</b></button>`).join('')}</div>` : ''}
     ${sobreFiltro || personaFiltro ? `<div class="filter-note"><span>${personaFiltro ? esc(personaFiltro) : 'Sobre ' + sobreFiltro} · ${visibles.length} carta${visibles.length === 1 ? '' : 's'}</span><button class="btn ghost small" id="clearf">Ver todas</button></div>` : ''}
     ${S.storageOK ? '' : '<p><span class="tag bad">Sin guardado</span> Este navegador no permite guardar la colección (¿modo privado?).</p>'}
     <div class="grid">${visibles.map(c => cardHTML(c, { isNew: S.lastNew === c.num })).join('')}</div>`);
   flipInNew();
+  const ch = $('#chips');
+  if (ch) {
+    const on = $('.chip.on', ch); if (on) ch.scrollLeft = on.offsetLeft - 16;
+    ch.addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; sfx('tap'); haptic(); rarezaFiltro = b.dataset.r || null; viewColeccion(); });
+  }
   const nb = $('#nob'); if (nb) nb.onclick = () => { try { sessionStorage.setItem('sp-nobanner', '1'); } catch { } $('#banner').remove(); };
   $('#clearf')?.addEventListener('click', () => { sobreFiltro = null; personaFiltro = null; sfx('tap'); viewColeccion(); });
   const map = $('#map');
